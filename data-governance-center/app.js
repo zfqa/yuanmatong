@@ -9,6 +9,11 @@ const sampleData = [
     { id: 'DT-008', name: '车辆进出记录_IoT', type: 'IoT设备数据', source: 'A企业节点', time: '2026-06-20 14:12:56', size: '67MB', status: 'completed', preview: null, desc: '工地出入口车牌识别与车辆进出时间记录', deviceModel: 'HK-IC402', protocol: 'HTTP', fields: 12, tags: ['车牌识别', '车辆管理', '出入口'] },
 ];
 
+const datasetData = [
+    { id: 'DS-001', name: '工地监控视频_001.mp4', type: '视频数据', source: 'A企业节点', size: '2.3GB', sampleType: '正样本', status: 'completed', preview: 'https://picsum.photos/seed/ds01/640/360', desc: '规范施工场景，人员正确佩戴安全帽、反光衣，操作符合安全规程', resolution: '1920×1080', duration: '02:15:30', fps: 25, codec: 'H.264', tags: ['安全帽', '反光衣', '规范操作'] },
+    { id: 'DS-002', name: '工地监控视频_001.mp4', type: '视频数据', source: 'A企业节点', size: '2.3GB', sampleType: '负样本', status: 'completed', preview: 'https://picsum.photos/seed/ds02/640/360', desc: '违规施工场景，存在未戴安全帽、进入危险区域等违规行为', resolution: '1920×1080', duration: '02:15:30', fps: 25, codec: 'H.264', tags: ['违规', '未戴安全帽', '危险区域'] },
+];
+
 let currentFilter = 'all';
 
 const statusMap = {
@@ -65,6 +70,74 @@ function initDataTable(filterType = 'all') {
         `;
         tbody.appendChild(row);
     });
+}
+
+function initDatasetTable() {
+    const tbody = document.getElementById('datasetTableBody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+
+    const sampleTypeMap = {
+        '正样本': { class: 'sample-positive', icon: 'fa-check-circle' },
+        '负样本': { class: 'sample-negative', icon: 'fa-times-circle' }
+    };
+
+    datasetData.forEach(item => {
+        const status = statusMap[item.status];
+        const sample = sampleTypeMap[item.sampleType];
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${item.id}</strong></td>
+            <td>${item.name}</td>
+            <td>${item.type}</td>
+            <td>${item.source}</td>
+            <td>${item.size}</td>
+            <td><span class="sample-badge ${sample.class}"><i class="fas ${sample.icon}"></i> ${item.sampleType}</span></td>
+            <td><span class="status-badge ${status.class}">${status.text}</span></td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="viewDatasetDetail('${item.id}')">
+                    <i class="fas fa-eye"></i> 查看详情
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function viewDatasetDetail(id) {
+    const item = datasetData.find(d => d.id === id);
+    if (!item) return;
+    const status = statusMap[item.status];
+    const sampleClass = item.sampleType === '正样本' ? 'sample-positive' : 'sample-negative';
+    let html = `<div class="detail-grid">
+        <div class="detail-field"><span class="label">数据ID</span><span class="value">${item.id}</span></div>
+        <div class="detail-field"><span class="label">数据名称</span><span class="value">${item.name}</span></div>
+        <div class="detail-field"><span class="label">数据类型</span><span class="value">${item.type}</span></div>
+        <div class="detail-field"><span class="label">来源节点</span><span class="value">${item.source}</span></div>
+        <div class="detail-field"><span class="label">数据大小</span><span class="value">${item.size}</span></div>
+        <div class="detail-field"><span class="label">样本类型</span><span class="value"><span class="sample-badge ${sampleClass}">${item.sampleType}</span></span></div>
+        <div class="detail-field"><span class="label">状态</span><span class="value"><span class="status-badge ${status.class}">${status.text}</span></span></div>`;
+
+    if (item.resolution) html += `<div class="detail-field"><span class="label">分辨率</span><span class="value">${item.resolution}</span></div>`;
+    if (item.duration) html += `<div class="detail-field"><span class="label">时长</span><span class="value">${item.duration}</span></div>`;
+    if (item.fps) html += `<div class="detail-field"><span class="label">帧率</span><span class="value">${item.fps} fps</span></div>`;
+    if (item.codec) html += `<div class="detail-field"><span class="label">编码格式</span><span class="value">${item.codec}</span></div>`;
+
+    html += `</div>`;
+    html += `<div class="detail-section-title">数据描述</div><p style="font-size:14px;color:#555;line-height:1.6">${item.desc}</p>`;
+
+    if (item.tags && item.tags.length) {
+        html += `<div class="detail-section-title">数据标签</div><div class="detail-tags">`;
+        item.tags.forEach(t => html += `<span class="detail-tag">${t}</span>`);
+        html += `</div>`;
+    }
+
+    if (item.preview) {
+        html += `<div class="detail-section-title">数据预览</div><div class="detail-preview"><img src="${item.preview}" alt="${item.name}"></div>`;
+    }
+
+    document.getElementById('detailContent').innerHTML = html;
+    document.getElementById('detailModal').classList.add('show');
 }
 
 function simulateRealtimeUpdates() {
@@ -206,6 +279,7 @@ function enterTrainingCenter() {
 document.addEventListener('DOMContentLoaded', () => {
     initSidebar();
     initDataTable();
+    initDatasetTable();
     simulateRealtimeUpdates();
 
     document.getElementById('detailModal').addEventListener('click', function(e) {

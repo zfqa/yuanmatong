@@ -1130,3 +1130,26 @@ body {
     color: #1890ff;
     border: 1px solid #91d5ff;
 }
+
+.sample-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.sample-badge i {
+    font-size: 11px;
+}
+.sample-positive {
+    background: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+}
+.sample-negative {
+    background: #fff2f0;
+    color: #ff4d4f;
+    border: 1px solid #ffccc7;
+}
