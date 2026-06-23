@@ -370,10 +370,10 @@
                     </div>
                 </div>
                 <div class="video-controls">
-                    <button class="control-btn" onclick="alert('全屏查看')">
+                    <button class="control-btn" onclick="goFullscreen(this)">
                         <i class="fas fa-expand"></i> 全屏查看
                     </button>
-                    <button class="control-btn primary" onclick="alert('采集并上传至元码通')">
+                    <button class="control-btn primary" onclick="captureAndUpload('cam01', 'A区主入口监控', 'https://picsum.photos/seed/cam01/800/450')">
                         <i class="fas fa-camera"></i> 采集并上传
                     </button>
                     <button class="control-btn" onclick="alert('历史回放')">
@@ -405,10 +405,10 @@
                     </div>
                 </div>
                 <div class="video-controls">
-                    <button class="control-btn" onclick="alert('全屏查看')">
+                    <button class="control-btn" onclick="goFullscreen(this)">
                         <i class="fas fa-expand"></i> 全屏查看
                     </button>
-                    <button class="control-btn primary" onclick="alert('采集并上传至元码通')">
+                    <button class="control-btn primary" onclick="captureAndUpload('cam02', 'B区材料堆放监控', 'https://picsum.photos/seed/cam02/800/450')">
                         <i class="fas fa-camera"></i> 采集并上传
                     </button>
                     <button class="control-btn" onclick="alert('历史回放')">
@@ -445,6 +445,40 @@
 
         setInterval(updateTime, 1000);
         updateTime();
+
+        function goFullscreen(btn) {
+            const videoCard = btn.closest('.video-card');
+            const img = videoCard.querySelector('img');
+            if (img) {
+                if (img.requestFullscreen) {
+                    img.requestFullscreen();
+                } else if (img.webkitRequestFullscreen) {
+                    img.webkitRequestFullscreen();
+                } else if (img.msRequestFullscreen) {
+                    img.msRequestFullscreen();
+                }
+            }
+        }
+
+        function captureAndUpload(camId, camName, imgSrc) {
+            const now = new Date();
+            const timeStr = now.getFullYear() + '-' + 
+                String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                String(now.getDate()).padStart(2, '0') + ' ' + 
+                String(now.getHours()).padStart(2, '0') + ':' + 
+                String(now.getMinutes()).padStart(2, '0') + ':' + 
+                String(now.getSeconds()).padStart(2, '0');
+            
+            localStorage.setItem('captureData', JSON.stringify({
+                camId: camId,
+                camName: camName,
+                imgSrc: imgSrc,
+                captureTime: timeStr,
+                source: '工地实时监控平台'
+            }));
+            
+            window.location.href = '../元码通平台/index.html?from=capture';
+        }
     </script>
 </body>
 </html>

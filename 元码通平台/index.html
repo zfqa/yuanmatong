@@ -301,12 +301,12 @@
                         <tr><th><input type="checkbox"></th><th>标识编码</th><th>素材名称</th><th>素材类型</th><th>所属企业</th><th>注册时间</th><th>同步状态</th><th>二维码</th><th>操作</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video001</span></td><td>A区主入口施工进度</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 14:30</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video002</span></td><td>B区材料验收记录</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 15:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video003</span></td><td>C区桩基施工监控</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 16:20</td><td><span class="status-tag pending"><i class="fas fa-clock"></i> 待同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video004</span></td><td>D区高空作业安全</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 17:10</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/img001</span></td><td>E区钢筋绑扎检查</td><td><i class="fas fa-image" style="color:var(--warning)"></i> 图片</td><td>山西路桥集团</td><td>2026-06-20 17:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
-                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video005</span></td><td>F区混凝土浇筑</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 18:30</td><td><span class="status-tag failed"><i class="fas fa-times-circle"></i> 同步失败</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video001</span></td><td>A区主入口施工进度</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 14:30</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video002</span></td><td>B区材料验收记录</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 15:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video003</span></td><td>C区桩基施工监控</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 16:20</td><td><span class="status-tag pending"><i class="fas fa-clock"></i> 待同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video004</span></td><td>D区高空作业安全</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 17:10</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/img001</span></td><td>E区钢筋绑扎检查</td><td><i class="fas fa-image" style="color:var(--warning)"></i> 图片</td><td>山西路桥集团</td><td>2026-06-20 17:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video005</span></td><td>F区混凝土浇筑</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 18:30</td><td><span class="status-tag failed"><i class="fas fa-times-circle"></i> 同步失败</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td></tr>
                     </tbody>
                 </table>
                 <div class="pagination">
@@ -686,6 +686,103 @@
         <span>二级节点：已连接 | Redis缓存：运行中 | Token有效期：2026-06-21 14:30</span>
     </footer>
 
+    <!-- 新增注册弹窗 -->
+    <div id="registerModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;overflow-y:auto;">
+        <div style="max-width:700px;margin:30px auto;background:var(--bg-secondary);border:1px solid rgba(30,144,255,0.3);border-radius:12px;overflow:hidden;">
+            <div style="background:var(--bg-card);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(30,144,255,0.2)">
+                <h3 style="color:var(--accent-cyan);font-size:1.1rem"><i class="fas fa-plus-circle"></i> 新增标识注册</h3>
+                <button onclick="closeRegisterModal()" style="background:none;border:none;color:var(--text-secondary);font-size:1.5rem;cursor:pointer">&times;</button>
+            </div>
+            <div id="registerPreview" style="position:relative">
+                <img id="registerImage" src="https://picsum.photos/seed/default/700/350" alt="预览" style="width:100%;height:300px;object-fit:cover;display:block;">
+                <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.8));padding:20px;color:white">
+                    <div style="display:flex;justify-content:space-between;font-size:0.85rem">
+                        <span><i class="fas fa-map-marker-alt"></i> 来源：<span id="registerSource">—</span></span>
+                        <span><i class="fas fa-clock"></i> 采集时间：<span id="registerTime">—</span></span>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:24px">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+                    <div class="form-row">
+                        <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">标识名称</label>
+                        <input type="text" id="regName" placeholder="请输入标识名称" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                    </div>
+                    <div class="form-row">
+                        <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">标识类型</label>
+                        <select id="regType" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                            <option value="">请选择类型</option>
+                            <option value="视频">视频</option>
+                            <option value="图片">图片</option>
+                            <option value="文档">文档</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+                    <div class="form-row">
+                        <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">选择模板</label>
+                        <select id="regTemplate" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                            <option value="">请选择模板</option>
+                            <option value="TPL-001">施工现场视频模板</option>
+                            <option value="TPL-002">工程质量图片模板</option>
+                            <option value="TPL-003">设备巡检报告模板</option>
+                            <option value="TPL-004">安全巡检记录模板</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">视频素材</label>
+                        <select id="regMaterial" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                            <option value="">请选择素材</option>
+                            <option value="cam01">A区主入口监控</option>
+                            <option value="cam02">B区材料堆放监控</option>
+                            <option value="cam03">C区桩基施工监控</option>
+                            <option value="cam04">D区高空作业监控</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:12px">
+                    <button onclick="closeRegisterModal()" style="padding:10px 24px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;cursor:pointer;font-size:0.9rem">取消</button>
+                    <button onclick="submitRegister()" style="padding:10px 24px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));border:none;color:white;border-radius:6px;cursor:pointer;font-size:0.9rem"><i class="fas fa-check"></i> 提交注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 查看详情弹窗 -->
+    <div id="viewModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;overflow-y:auto;">
+        <div style="max-width:600px;margin:50px auto;background:var(--bg-secondary);border:1px solid rgba(30,144,255,0.3);border-radius:12px;overflow:hidden;">
+            <div style="background:var(--bg-card);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(30,144,255,0.2)">
+                <h3 style="color:var(--accent-cyan);font-size:1.1rem"><i class="fas fa-info-circle"></i> 标识详情</h3>
+                <button onclick="closeViewModal()" style="background:none;border:none;color:var(--text-secondary);font-size:1.5rem;cursor:pointer">&times;</button>
+            </div>
+            <div id="viewContent" style="padding:24px"></div>
+        </div>
+    </div>
+
+    <!-- 编辑弹窗 -->
+    <div id="editModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:1000;overflow-y:auto;">
+        <div style="max-width:600px;margin:50px auto;background:var(--bg-secondary);border:1px solid rgba(30,144,255,0.3);border-radius:12px;overflow:hidden;">
+            <div style="background:var(--bg-card);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(30,144,255,0.2)">
+                <h3 style="color:var(--accent-cyan);font-size:1.1rem"><i class="fas fa-edit"></i> 编辑标识</h3>
+                <button onclick="closeEditModal()" style="background:none;border:none;color:var(--text-secondary);font-size:1.5rem;cursor:pointer">&times;</button>
+            </div>
+            <div style="padding:24px">
+                <div class="form-row" style="margin-bottom:16px">
+                    <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">素材名称</label>
+                    <input type="text" id="editName" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                </div>
+                <div class="form-row" style="margin-bottom:16px">
+                    <label style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:6px;display:block">所属企业</label>
+                    <input type="text" id="editCompany" style="width:100%;padding:10px 12px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;font-size:0.9rem">
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:12px">
+                    <button onclick="closeEditModal()" style="padding:10px 24px;background:var(--bg-card);border:1px solid rgba(30,144,255,0.3);color:var(--text-primary);border-radius:6px;cursor:pointer;font-size:0.9rem">取消</button>
+                    <button onclick="saveEdit()" style="padding:10px 24px;background:linear-gradient(135deg,var(--accent-blue),var(--accent-cyan));border:none;color:white;border-radius:6px;cursor:pointer;font-size:0.9rem"><i class="fas fa-save"></i> 保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         function switchModule(el, name) {
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
@@ -694,6 +791,149 @@
             const target = document.getElementById('mod-' + name);
             if (target) target.classList.add('active');
         }
+
+        // 生成随机二维码SVG
+        function generateQRCode() {
+            const size = 50;
+            let svg = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">`;
+            svg += `<rect width="${size}" height="${size}" fill="white"/>`;
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if (Math.random() > 0.5) {
+                        svg += `<rect x="${j*6+1}" y="${i*6+1}" width="5" height="5" fill="black"/>`;
+                    }
+                }
+            }
+            svg += '</svg>';
+            return 'data:image/svg+xml;base64,' + btoa(svg);
+        }
+
+        // 初始化二维码
+        document.querySelectorAll('.qrcode-cell').forEach(cell => {
+            const img = document.createElement('img');
+            img.src = generateQRCode();
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'contain';
+            cell.innerHTML = '';
+            cell.appendChild(img);
+        });
+
+        // 新增注册
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'block';
+            const captureData = localStorage.getItem('captureData');
+            if (captureData) {
+                const data = JSON.parse(captureData);
+                document.getElementById('registerImage').src = data.imgSrc;
+                document.getElementById('registerSource').textContent = data.source;
+                document.getElementById('registerTime').textContent = data.captureTime;
+                document.getElementById('regName').value = data.camName;
+                document.getElementById('regType').value = '视频';
+                document.getElementById('regMaterial').value = data.camId;
+                localStorage.removeItem('captureData');
+            }
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function submitRegister() {
+            const name = document.getElementById('regName').value;
+            const type = document.getElementById('regType').value;
+            if (!name || !type) {
+                alert('请填写标识名称和类型');
+                return;
+            }
+            const tbody = document.querySelector('#mod-identity tbody');
+            const newId = '88.550.cn/video' + String(Math.floor(Math.random()*900)+100);
+            const now = new Date();
+            const timeStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+            const icon = type === '视频' ? 'fa-video' : 'fa-image';
+            const iconColor = type === '视频' ? 'var(--accent-cyan)' : 'var(--warning)';
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td><span class="handle-code">${newId}</span></td>
+                <td>${name}</td>
+                <td><i class="fas ${icon}" style="color:${iconColor}"></i> ${type}</td>
+                <td>山西路桥集团</td>
+                <td>${timeStr}</td>
+                <td><span class="status-tag pending"><i class="fas fa-clock"></i> 待同步</span></td>
+                <td><div class="qrcode-cell"><img src="${generateQRCode()}" style="width:100%;height:100%;object-fit:contain"></div></td>
+                <td><div class="action-btns"><button class="action-btn view" onclick="viewRow(this)">查看</button><button class="action-btn edit" onclick="editRow(this)">编辑</button><button class="action-btn delete" onclick="deleteRow(this)">删除</button></div></td>
+            `;
+            tbody.insertBefore(newRow, tbody.firstChild);
+            closeRegisterModal();
+            alert('标识注册成功！');
+        }
+
+        // 查看详情
+        function viewRow(btn) {
+            const row = btn.closest('tr');
+            const cells = row.querySelectorAll('td');
+            const html = `
+                <div style="display:grid;gap:12px">
+                    <div style="display:flex;padding:10px 0;border-bottom:1px solid rgba(30,144,255,0.1)"><span style="width:120px;color:var(--text-secondary)">标识编码</span><span>${cells[1].innerHTML}</span></div>
+                    <div style="display:flex;padding:10px 0;border-bottom:1px solid rgba(30,144,255,0.1)"><span style="width:120px;color:var(--text-secondary)">素材名称</span><span>${cells[2].textContent}</span></div>
+                    <div style="display:flex;padding:10px 0;border-bottom:1px solid rgba(30,144,255,0.1)"><span style="width:120px;color:var(--text-secondary)">素材类型</span><span>${cells[3].textContent}</span></div>
+                    <div style="display:flex;padding:10px 0;border-bottom:1px solid rgba(30,144,255,0.1)"><span style="width:120px;color:var(--text-secondary)">所属企业</span><span>${cells[4].textContent}</span></div>
+                    <div style="display:flex;padding:10px 0;border-bottom:1px solid rgba(30,144,255,0.1)"><span style="width:120px;color:var(--text-secondary)">注册时间</span><span>${cells[5].textContent}</span></div>
+                    <div style="display:flex;padding:10px 0"><span style="width:120px;color:var(--text-secondary)">同步状态</span><span>${cells[6].innerHTML}</span></div>
+                </div>
+            `;
+            document.getElementById('viewContent').innerHTML = html;
+            document.getElementById('viewModal').style.display = 'block';
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').style.display = 'none';
+        }
+
+        // 编辑
+        let currentEditRow = null;
+        function editRow(btn) {
+            currentEditRow = btn.closest('tr');
+            const cells = currentEditRow.querySelectorAll('td');
+            document.getElementById('editName').value = cells[2].textContent;
+            document.getElementById('editCompany').value = cells[4].textContent;
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function saveEdit() {
+            if (currentEditRow) {
+                const cells = currentEditRow.querySelectorAll('td');
+                cells[2].textContent = document.getElementById('editName').value;
+                cells[4].textContent = document.getElementById('editCompany').value;
+            }
+            closeEditModal();
+            alert('保存成功！');
+        }
+
+        // 删除
+        function deleteRow(btn) {
+            if (confirm('确定要删除这条标识吗？')) {
+                btn.closest('tr').remove();
+                alert('删除成功！');
+            }
+        }
+
+        // 检查是否从监控平台跳转过来
+        window.addEventListener('load', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('from') === 'capture') {
+                openRegisterModal();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+
+        // 绑定新增注册按钮
+        document.querySelector('.btn-primary').addEventListener('click', openRegisterModal);
     </script>
 </body>
 </html>
