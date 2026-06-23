@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目导航</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c1426 0%, #1a2a4a 50%, #0d1f3c 100%);
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #fff;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7eb8ff;
+            font-size: 1.1rem;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(20, 40, 80, 0.8), rgba(10, 25, 50, 0.9));
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: block;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #1e90ff, transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #1e90ff;
+            box-shadow: 0 20px 60px rgba(30, 144, 255, 0.3),
+                        0 0 40px rgba(30, 144, 255, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, rgba(30, 144, 255, 0.2), rgba(0, 191, 255, 0.1));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+        }
+
+        .card-title {
+            color: #fff;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .card-desc {
+            color: #8ab4f8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .card-link {
+            display: inline-block;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            color: #fff;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-link {
+            box-shadow: 0 5px 20px rgba(30, 144, 255, 0.4);
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>项目集合</h1>
+        <p class="subtitle">数据治理与可视化平台集合</p>
+        
+        <div class="cards">
+            <a href="data-governance-center/index.html" class="card">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">数据治理中台</h2>
+                <p class="card-desc">数据治理中心管理系统<br>包含数据接入、清洗、筛选、标注等6大模块</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="数据确权管理平台/index.html" class="card">
+                <div class="card-icon">🔐</div>
+                <h2 class="card-title">数据确权管理平台</h2>
+                <p class="card-desc">数据资产确权与管理<br>工作台、资产登记、产权公示等5大功能</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="可信数据空间连接器/index.html" class="card">
+                <div class="card-icon">🌐</div>
+                <h2 class="card-title">可信数据空间连接器</h2>
+                <p class="card-desc">深色科技风控制台界面<br>身份管理、数据接入、安全交付等6大模块</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="工地实时监控平台/index.html" class="card">
+                <div class="card-icon">🏗️</div>
+                <h2 class="card-title">工地实时监控平台</h2>
+                <p class="card-desc">施工现场双路视频实时监控<br>全屏查看、采集上传、历史回放、切换画面</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="元码通平台/index.html" class="card">
+                <div class="card-icon">📱</div>
+                <h2 class="card-title">元码通平台</h2>
+                <p class="card-desc">标识信息管理系统<br>标识注册、二维码生成、模板管理、节点同步</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="模型训练中心/index.html" class="card">
+                <div class="card-icon">🧠</div>
+                <h2 class="card-title">模型训练中心</h2>
+                <p class="card-desc">AI模型训练与安全部署<br>YOLOv8训练、Loss监控、模型评估、版本管理</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+            
+            <a href="机器人企业节点/index.html" class="card">
+                <div class="card-icon">🤖</div>
+                <h2 class="card-title">机器人企业节点</h2>
+                <p class="card-desc">机器人企业协同数据节点管理平台<br>数据中台对接、通信连接器、AI图像识别、双向数据交互</p>
+                <span class="card-link">进入系统 →</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

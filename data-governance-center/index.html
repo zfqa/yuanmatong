@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据中台 - 数据治理中心</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部全局栏 -->
+    <header class="header">
+        <div class="header-left">
+            <h1 class="logo">
+                <i class="fas fa-database"></i>
+                数据中台（数据治理中心）
+                <span class="subtitle">Data Governance Center</span>
+            </h1>
+        </div>
+        <div class="header-right">
+            <div class="metric-item">
+                <i class="fas fa-server"></i>
+                <span class="metric-label">在线节点</span>
+                <span class="metric-value" id="onlineNodes">12</span>
+            </div>
+            <div class="metric-item">
+                <i class="fas fa-hdd"></i>
+                <span class="metric-label">今日处理数据</span>
+                <span class="metric-value" id="dataProcessed">15.6TB</span>
+            </div>
+            <div class="metric-item">
+                <i class="fas fa-chart-line"></i>
+                <span class="metric-label">数据质量评分</span>
+                <span class="metric-value quality" id="qualityScore">96.8%</span>
+            </div>
+            <div class="metric-item status">
+                <i class="fas fa-check-circle"></i>
+                <span class="metric-label">系统状态</span>
+                <span class="metric-value running">运行正常</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 左侧菜单栏 -->
+        <nav class="sidebar">
+            <div class="menu-item active" data-module="1">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>数据接入中心</span>
+            </div>
+            <div class="menu-item" data-module="2">
+                <i class="fas fa-broom"></i>
+                <span>数据清洗中心</span>
+            </div>
+            <div class="menu-item" data-module="3">
+                <i class="fas fa-filter"></i>
+                <span>样本筛选中心</span>
+            </div>
+            <div class="menu-item" data-module="4">
+                <i class="fas fa-tags"></i>
+                <span>数据标注中心</span>
+            </div>
+            <div class="menu-item" data-module="5">
+                <i class="fas fa-boxes"></i>
+                <span>数据集生成中心</span>
+            </div>
+            <div class="menu-item" data-module="6">
+                <i class="fas fa-brain"></i>
+                <span>模型状态中心</span>
+            </div>
+        </nav>
+
+        <!-- 右侧内容区 -->
+        <div class="content-area">
+            <!-- 模块一：数据接入中心 -->
+            <section class="module active" id="module1">
+                <div class="module-header">
+                    <h2><i class="fas fa-sign-in-alt"></i> 数据接入中心</h2>
+                    <div class="module-actions">
+                        <button class="btn btn-primary" onclick="startGovernance()">
+                            <i class="fas fa-play"></i> 开始治理
+                        </button>
+                        <button class="btn btn-secondary" onclick="batchProcess()">
+                            <i class="fas fa-tasks"></i> 批量处理
+                        </button>
+                    </div>
+                </div>
+                <div class="module-content">
+                    <div class="data-types">
+                        <div class="data-type-card active" data-type="all">
+                            <i class="fas fa-database"></i>
+                            <span>全部数据</span>
+                        </div>
+                        <div class="data-type-card" data-type="视频数据">
+                            <i class="fas fa-video"></i>
+                            <span>视频数据</span>
+                        </div>
+                        <div class="data-type-card" data-type="图片数据">
+                            <i class="fas fa-image"></i>
+                            <span>图片数据</span>
+                        </div>
+                        <div class="data-type-card" data-type="传感器数据">
+                            <i class="fas fa-microchip"></i>
+                            <span>传感器数据</span>
+                        </div>
+                        <div class="data-type-card" data-type="IoT设备数据">
+                            <i class="fas fa-wifi"></i>
+                            <span>IoT设备数据</span>
+                        </div>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>数据ID</th>
+                                    <th>数据名称</th>
+                                    <th>数据类型</th>
+                                    <th>来源节点（A企业）</th>
+                                    <th>上传时间</th>
+                                    <th>数据大小</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块二：数据清洗中心 -->
+            <section class="module" id="module2">
+                <div class="module-header">
+                    <h2><i class="fas fa-broom"></i> 数据清洗中心</h2>
+                </div>
+                <div class="module-content">
+                    <div class="cleaning-layout">
+                        <div class="cleaning-main">
+                            <div class="cleaning-process">
+                                <div class="process-flow">
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-file"></i></div>
+                                        <div class="step-label">原始数据</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-copy"></i></div>
+                                        <div class="step-label">去重处理</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-text-width"></i></div>
+                                        <div class="step-label">格式统一</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                                        <div class="step-label">异常检测</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-puzzle-piece"></i></div>
+                                        <div class="step-label">缺失值补全</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-volume-mute"></i></div>
+                                        <div class="step-label">噪声过滤</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step active">
+                                        <div class="step-icon"><i class="fas fa-check-circle"></i></div>
+                                        <div class="step-label">标准化输出</div>
+                                    </div>
+                                    <div class="process-arrow"><i class="fas fa-arrow-down"></i></div>
+                                    <div class="process-step">
+                                        <div class="step-icon"><i class="fas fa-star"></i></div>
+                                        <div class="step-label">质量评分</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cleaning-controls">
+                                <h3>功能开关</h3>
+                                <div class="control-switches">
+                                    <label class="switch-item">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-label">去重处理</span>
+                                    </label>
+                                    <label class="switch-item">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-label">格式统一</span>
+                                    </label>
+                                    <label class="switch-item">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-label">数据校验</span>
+                                    </label>
+                                    <label class="switch-item">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-label">异常检测</span>
+                                    </label>
+                                    <label class="switch-item">
+                                        <input type="checkbox" checked>
+                                        <span class="switch-label">空值处理</span>
+                                    </label>
+                                    <label class="switch-item">
+                                        <input type="checkbox">
+                                        <span class="switch-label">数据脱敏</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cleaning-log-panel">
+                            <h3>清洗日志</h3>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 87%"></div>
+                                </div>
+                                <div class="progress-text">87%</div>
+                            </div>
+                            <div class="log-container" id="cleaningLog">
+                                <div class="log-entry info">
+                                    <span class="log-time">[14:21:01]</span>
+                                    <span class="log-message">开始清洗</span>
+                                </div>
+                                <div class="log-entry success">
+                                    <span class="log-time">[14:21:08]</span>
+                                    <span class="log-message">检测重复数据</span>
+                                </div>
+                                <div class="log-entry warning">
+                                    <span class="log-time">[14:21:11]</span>
+                                    <span class="log-message">删除异常样本</span>
+                                </div>
+                                <div class="log-entry info">
+                                    <span class="log-time">[14:21:17]</span>
+                                    <span class="log-message">标准化完成</span>
+                                </div>
+                                <div class="log-entry success">
+                                    <span class="log-time">[14:21:21]</span>
+                                    <span class="log-message">质量评分完成</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块三：样本筛选中心 -->
+            <section class="module" id="module3">
+                <div class="module-header">
+                    <h2><i class="fas fa-filter"></i> 样本筛选中心</h2>
+                </div>
+                <div class="module-content">
+                    <div class="filter-rules">
+                        <h3>筛选规则</h3>
+                        <div class="rule-grid">
+                            <div class="rule-item">
+                                <i class="fas fa-eye"></i>
+                                <span>清晰度</span>
+                                <div class="rule-value">≥ 720p</div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-expand"></i>
+                                <span>分辨率</span>
+                                <div class="rule-value">1920×1080</div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-bullseye"></i>
+                                <span>目标完整性</span>
+                                <div class="rule-value">≥ 90%</div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-th"></i>
+                                <span>场景覆盖率</span>
+                                <div class="rule-value">≥ 85%</div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-tags"></i>
+                                <span>标签完整度</span>
+                                <div class="rule-value">100%</div>
+                            </div>
+                            <div class="rule-item">
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>质量评分</span>
+                                <div class="rule-value">≥ 80分</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-stats">
+                        <div class="stat-card total">
+                            <div class="stat-number" id="totalSamples">12345</div>
+                            <div class="stat-label">总样本</div>
+                        </div>
+                        <div class="stat-card valid">
+                            <div class="stat-number" id="validSamples">9876</div>
+                            <div class="stat-label">可训练</div>
+                        </div>
+                        <div class="stat-card rejected">
+                            <div class="stat-number" id="rejectedSamples">2469</div>
+                            <div class="stat-label">淘汰</div>
+                        </div>
+                        <div class="stat-card rate">
+                            <div class="stat-number" id="passRate">80%</div>
+                            <div class="stat-label">合格率</div>
+                        </div>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" onclick="autoFilter()">
+                            <i class="fas fa-magic"></i> 自动筛选
+                        </button>
+                        <button class="btn btn-secondary" onclick="manualReview()">
+                            <i class="fas fa-user-check"></i> 人工复核
+                        </button>
+                        <button class="btn btn-success" onclick="exportSamples()">
+                            <i class="fas fa-download"></i> 导出样本
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块四：数据标注中心 -->
+            <section class="module" id="module4">
+                <div class="module-header">
+                    <h2><i class="fas fa-tags"></i> 数据标注中心</h2>
+                </div>
+                <div class="module-content">
+                    <div class="annotation-layout">
+                            <div class="annotation-canvas">
+                            <img src="https://picsum.photos/seed/annot/800/450" alt="标注画布" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">
+                        </div>
+                        <div class="annotation-panel">
+                            <h3>标注对象</h3>
+                            <div class="annotation-types">
+                                <span class="annotation-tag"><i class="fas fa-user"></i> 人员</span>
+                                <span class="annotation-tag"><i class="fas fa-hard-hat"></i> 安全帽</span>
+                                <span class="annotation-tag"><i class="fas fa-vest"></i> 反光衣</span>
+                                <span class="annotation-tag"><i class="fas fa-car"></i> 车辆</span>
+                                <span class="annotation-tag danger"><i class="fas fa-exclamation"></i> 危险区域</span>
+                                <span class="annotation-tag warning"><i class="fas fa-arrow-up"></i> 高空作业</span>
+                                <span class="annotation-tag danger"><i class="fas fa-ban"></i> 违规行为</span>
+                            </div>
+                            <h3>标注工具</h3>
+                            <div class="annotation-tools">
+                                <button class="tool-btn" title="矩形框">
+                                    <i class="fas fa-vector-square"></i>
+                                </button>
+                                <button class="tool-btn" title="多边形">
+                                    <i class="fas fa-draw-polygon"></i>
+                                </button>
+                                <button class="tool-btn" title="关键点">
+                                    <i class="fas fa-crosshairs"></i>
+                                </button>
+                                <button class="tool-btn" title="自动标注">
+                                    <i class="fas fa-robot"></i>
+                                </button>
+                                <button class="tool-btn active" title="AI辅助标注">
+                                    <i class="fas fa-brain"></i>
+                                </button>
+                            </div>
+                            <h3>标注统计</h3>
+                            <div class="annotation-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">标注数量</span>
+                                    <span class="stat-value">128框</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">目标数量</span>
+                                    <span class="stat-value">26</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">完成率</span>
+                                    <span class="stat-value">93%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块五：数据集生成中心 -->
+            <section class="module" id="module5">
+                <div class="module-header">
+                    <h2><i class="fas fa-boxes"></i> 数据集生成中心</h2>
+                </div>
+                <div class="module-content">
+                    <div class="dataset-info">
+                        <div class="dataset-details">
+                            <h3>数据集信息</h3>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">名称</span>
+                                    <span class="info-value">Construction_Safety_Dataset_V1</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">数据量</span>
+                                    <span class="info-value">9500</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">类别</span>
+                                    <span class="info-value">12类</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">标注框</span>
+                                    <span class="info-value">125,000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="format-support">
+                            <h3>格式支持</h3>
+                            <div class="format-tags">
+                                <span class="format-tag">YOLO</span>
+                                <span class="format-tag">COCO</span>
+                                <span class="format-tag">VOC</span>
+                                <span class="format-tag">JSON</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dataset-actions">
+                        <button class="btn btn-primary" onclick="generateDataset()">
+                            <i class="fas fa-cogs"></i> 生成数据集
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportDataset()">
+                            <i class="fas fa-file-export"></i> 下载数据集
+                        </button>
+                        <button class="btn btn-success" onclick="syncToNodeB()">
+                            <i class="fas fa-sync"></i> 同步至B节点
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块六：模型状态中心 -->
+            <section class="module" id="module6">
+                <div class="module-header">
+                    <h2><i class="fas fa-brain"></i> 模型状态中心</h2>
+                </div>
+                <div class="module-content">
+                    <div class="model-status-card">
+                        <div class="model-info">
+                            <div class="model-name">
+                                <i class="fas fa-robot"></i>
+                                <span>当前模型</span>
+                            </div>
+                            <div class="model-id">construction-safety-v1.0</div>
+                            <div class="model-state">
+                                <span class="state-badge pending">待训练</span>
+                            </div>
+                        </div>
+                        <div class="model-details">
+                            <div class="detail-item">
+                                <span class="detail-label">数据集</span>
+                                <span class="detail-value ready">已准备</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">同步状态</span>
+                                <span class="detail-value ready">已连接B节点</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-large btn-primary" onclick="enterTrainingCenter()">
+                            <i class="fas fa-arrow-right"></i> 进入模型训练中心
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 数据详情弹窗 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fas fa-file-alt"></i> 数据详情</h3>
+                <button class="modal-close" onclick="closeDetail()">&times;</button>
+            </div>
+            <div class="modal-body" id="detailContent"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

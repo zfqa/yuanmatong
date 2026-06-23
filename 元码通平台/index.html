@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元码通平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f2042;
+            --bg-card: #132d5a;
+            --border-color: #1e90ff;
+            --text-primary: #ffffff;
+            --text-secondary: #7eb8ff;
+            --accent-blue: #1e90ff;
+            --accent-cyan: #00d4ff;
+            --success: #00e676;
+            --warning: #ffc107;
+            --danger: #ff4757;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(180deg, rgba(15, 32, 66, 0.95), rgba(10, 22, 40, 0.98));
+            border-bottom: 1px solid rgba(30, 144, 255, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .logo {
+            font-size: 1.4rem; font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .header-right { display: flex; align-items: center; gap: 20px; font-size: 0.85rem; color: var(--text-secondary); }
+        .user-info {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--bg-card); padding: 8px 15px; border-radius: 6px;
+        }
+        .user-info i { color: var(--accent-cyan); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+        .main-container { display: grid; grid-template-columns: 250px 1fr; height: calc(100vh - 65px); }
+
+        .sidebar {
+            background: var(--bg-secondary);
+            border-right: 1px solid rgba(30, 144, 255, 0.2);
+            padding: 20px 0; overflow-y: auto;
+        }
+        .sidebar-title {
+            padding: 0 20px 15px; font-size: 0.9rem; color: var(--accent-cyan);
+            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
+            margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+        }
+        .menu-item {
+            padding: 14px 20px; display: flex; align-items: center; gap: 12px;
+            cursor: pointer; transition: all 0.3s ease;
+            color: var(--text-secondary); font-size: 0.95rem;
+            border-left: 3px solid transparent;
+        }
+        .menu-item:hover { background: rgba(30,144,255,0.1); color: var(--text-primary); }
+        .menu-item.active { background: rgba(30,144,255,0.15); color: var(--accent-cyan); border-left-color: var(--accent-blue); }
+        .menu-item i { width: 20px; text-align: center; font-size: 0.9rem; }
+
+        .content-area { padding: 25px; overflow-y: auto; }
+        .module-section { display: none; }
+        .module-section.active { display: block; }
+
+        .content-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .content-title { font-size: 1.3rem; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
+        .content-title i { color: var(--accent-cyan); }
+        .toolbar { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .search-box { position: relative; }
+        .search-input {
+            padding: 10px 15px 10px 40px; background: var(--bg-card);
+            border: 1px solid rgba(30,144,255,0.3); color: var(--text-primary);
+            border-radius: 6px; width: 280px; font-size: 0.9rem;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-blue); }
+        .search-input::placeholder { color: var(--text-secondary); }
+        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 6px;
+            cursor: pointer; font-size: 0.9rem; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan)); color: white; }
+        .btn-primary:hover { box-shadow: 0 5px 15px rgba(30,144,255,0.4); transform: translateY(-2px); }
+        .btn-export { background: var(--bg-card); color: var(--text-primary); border: 1px solid rgba(30,144,255,0.3); }
+        .btn-export:hover { border-color: var(--accent-blue); background: rgba(30,144,255,0.1); }
+
+        .data-table { width: 100%; border-collapse: collapse; background: var(--bg-secondary); border-radius: 10px; overflow: hidden; }
+        .data-table thead { background: var(--bg-card); }
+        .data-table th { padding: 14px 18px; text-align: left; font-weight: 500; color: var(--accent-cyan); font-size: 0.9rem; border-bottom: 1px solid rgba(30,144,255,0.3); }
+        .data-table td { padding: 14px 18px; border-bottom: 1px solid rgba(30,144,255,0.1); font-size: 0.9rem; color: var(--text-secondary); }
+        .data-table tbody tr:hover { background: rgba(30,144,255,0.05); }
+        .data-table tbody tr:hover td { color: var(--text-primary); }
+
+        .handle-code {
+            font-family: 'Consolas', monospace; color: var(--accent-cyan);
+            background: rgba(0,212,255,0.1); padding: 4px 8px; border-radius: 4px; font-size: 0.85rem;
+        }
+        .status-tag { padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 5px; }
+        .status-tag.synced { background: rgba(0,230,118,0.15); color: var(--success); }
+        .status-tag.pending { background: rgba(255,193,7,0.15); color: var(--warning); }
+        .status-tag.failed { background: rgba(255,71,87,0.15); color: var(--danger); }
+        .status-tag.online { background: rgba(0,230,118,0.15); color: var(--success); }
+        .status-tag.offline { background: rgba(255,71,87,0.15); color: var(--danger); }
+        .status-tag.active { background: rgba(30,144,255,0.15); color: var(--accent-blue); }
+        .status-tag.disabled { background: rgba(255,255,255,0.08); color: #888; }
+
+        .qrcode-cell {
+            width: 50px; height: 50px; background: white; border-radius: 6px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: transform 0.3s ease;
+        }
+        .qrcode-cell:hover { transform: scale(1.1); }
+        .qrcode-cell i { color: #000; font-size: 1.5rem; }
+
+        .action-btns { display: flex; gap: 8px; }
+        .action-btn {
+            padding: 6px 14px; border-radius: 4px; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.3s ease; border: 1px solid;
+        }
+        .action-btn.view { background: rgba(30,144,255,0.15); border-color: var(--accent-blue); color: var(--accent-blue); }
+        .action-btn.view:hover { background: var(--accent-blue); color: white; }
+        .action-btn.edit { background: rgba(0,212,255,0.15); border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .action-btn.edit:hover { background: var(--accent-cyan); color: var(--bg-primary); }
+        .action-btn.delete { background: rgba(255,71,87,0.15); border-color: var(--danger); color: var(--danger); }
+        .action-btn.delete:hover { background: var(--danger); color: white; }
+        .action-btn.enable { background: rgba(0,230,118,0.15); border-color: var(--success); color: var(--success); }
+        .action-btn.enable:hover { background: var(--success); color: var(--bg-primary); }
+        .action-btn.disable { background: rgba(255,193,7,0.15); border-color: var(--warning); color: var(--warning); }
+        .action-btn.disable:hover { background: var(--warning); color: var(--bg-primary); }
+
+        .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px 0; }
+        .page-info { color: var(--text-secondary); font-size: 0.85rem; }
+        .page-btns { display: flex; gap: 8px; }
+        .page-btn {
+            width: 36px; height: 36px; display: flex; justify-content: center; align-items: center;
+            background: var(--bg-card); border: 1px solid rgba(30,144,255,0.3);
+            color: var(--text-secondary); border-radius: 6px; cursor: pointer;
+            transition: all 0.3s ease; font-size: 0.85rem;
+        }
+        .page-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+        .page-btn.active { background: var(--accent-blue); border-color: transparent; color: white; }
+
+        .footer {
+            background: var(--bg-secondary); border-top: 1px solid rgba(30,144,255,0.2);
+            padding: 12px 30px; display: flex; justify-content: space-between; align-items: center;
+            color: var(--text-secondary); font-size: 0.8rem;
+            position: fixed; bottom: 0; left: 0; right: 0;
+        }
+        .back-link {
+            padding: 8px 16px; background: var(--bg-card);
+            border: 1px solid rgba(30,144,255,0.3); color: var(--text-primary);
+            border-radius: 6px; text-decoration: none; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 8px; font-size: 0.85rem;
+        }
+        .back-link:hover { background: var(--accent-blue); border-color: transparent; }
+
+        .stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: var(--bg-secondary); border: 1px solid rgba(30,144,255,0.2);
+            border-radius: 10px; padding: 20px; transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: var(--accent-blue); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(30,144,255,0.15); }
+        .stat-icon { font-size: 1.6rem; margin-bottom: 12px; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; }
+        .stat-value { font-size: 1.6rem; font-weight: 700; }
+
+        .config-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; }
+        .config-panel {
+            background: var(--bg-secondary); border: 1px solid rgba(30,144,255,0.2);
+            border-radius: 10px; overflow: hidden;
+        }
+        .config-panel-header {
+            background: var(--bg-card); padding: 14px 20px;
+            border-bottom: 1px solid rgba(30,144,255,0.2);
+            font-weight: 600; font-size: 0.95rem;
+            display: flex; align-items: center; gap: 10px;
+            color: var(--accent-cyan);
+        }
+        .config-panel-body { padding: 20px; }
+        .form-row { margin-bottom: 16px; }
+        .form-row label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 6px; }
+        .form-row input, .form-row select, .form-row textarea {
+            width: 100%; padding: 9px 12px; background: var(--bg-card);
+            border: 1px solid rgba(30,144,255,0.3); color: var(--text-primary);
+            border-radius: 6px; font-size: 0.85rem; font-family: inherit;
+        }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus { outline: none; border-color: var(--accent-blue); }
+        .form-row select option { background: var(--bg-card); }
+        .form-row textarea { resize: vertical; min-height: 80px; }
+        .form-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+        .switch-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .switch {
+            width: 40px; height: 22px; background: rgba(255,255,255,0.15);
+            border-radius: 11px; position: relative; transition: background 0.3s;
+        }
+        .switch.on { background: var(--accent-blue); }
+        .switch::after {
+            content: ''; position: absolute; width: 18px; height: 18px;
+            background: #fff; border-radius: 50%; top: 2px; left: 2px;
+            transition: transform 0.3s;
+        }
+        .switch.on::after { transform: translateX(18px); }
+
+        .detail-row { display: flex; padding: 12px 0; border-bottom: 1px solid rgba(30,144,255,0.1); }
+        .detail-label { width: 140px; flex-shrink: 0; color: var(--text-secondary); font-size: 0.85rem; }
+        .detail-value { flex: 1; font-size: 0.9rem; }
+
+        .log-level { padding: 3px 8px; border-radius: 3px; font-size: 0.75rem; font-weight: 600; }
+        .log-level.info { background: rgba(30,144,255,0.2); color: var(--accent-blue); }
+        .log-level.warn { background: rgba(255,193,7,0.2); color: var(--warning); }
+        .log-level.error { background: rgba(255,71,87,0.2); color: var(--danger); }
+        .log-level.debug { background: rgba(255,255,255,0.1); color: #aaa; }
+
+        .node-card {
+            background: var(--bg-secondary); border: 1px solid rgba(30,144,255,0.2);
+            border-radius: 10px; padding: 20px; margin-bottom: 16px;
+            display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+        }
+        .node-card:hover { border-color: var(--accent-blue); }
+        .node-name { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+        .node-meta { display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.82rem; color: var(--text-secondary); }
+        .node-meta span { display: flex; align-items: center; gap: 6px; }
+
+        @media (max-width: 1024px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .config-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo"><i class="fas fa-qrcode"></i> 元码通平台</div>
+            <span style="color:var(--text-secondary);font-size:0.85rem">标识信息管理系统</span>
+        </div>
+        <div class="header-right">
+            <div class="user-info"><i class="fas fa-building"></i><span>山西路桥集团</span></div>
+            <div class="user-info"><i class="fas fa-user"></i><span>Admin</span></div>
+            <div class="user-info"><span class="status-dot"></span><span>Token有效</span></div>
+            <button class="btn btn-export" onclick="alert('退出登录')"><i class="fas fa-sign-out-alt"></i> 退出</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-title"><i class="fas fa-th-list"></i> 功能菜单</div>
+            <div class="menu-item active" onclick="switchModule(this, 'identity')"><i class="fas fa-qrcode"></i> 标识信息管理</div>
+            <div class="menu-item" onclick="switchModule(this, 'template')"><i class="fas fa-file-alt"></i> 模板管理</div>
+            <div class="menu-item" onclick="switchModule(this, 'auth')"><i class="fas fa-key"></i> 模板字段授权</div>
+            <div class="menu-item" onclick="switchModule(this, 'user')"><i class="fas fa-users-cog"></i> 用户与认证管理</div>
+            <div class="menu-item" onclick="switchModule(this, 'node')"><i class="fas fa-server"></i> 二级节点代理</div>
+            <div class="menu-item" onclick="switchModule(this, 'params')"><i class="fas fa-cogs"></i> 系统参数管理</div>
+            <div class="menu-item" onclick="switchModule(this, 'logs')"><i class="fas fa-clipboard-list"></i> 操作日志管理</div>
+            <div class="menu-item" onclick="switchModule(this, 'cache')"><i class="fas fa-database"></i> 缓存配置管理</div>
+        </div>
+
+        <div class="content-area">
+
+            <!-- 模块1：标识信息管理 -->
+            <div class="module-section active" id="mod-identity">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-qrcode"></i> 标识信息管理</h2>
+                    <div class="toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="输入标识码或关键词搜索...">
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> 新增注册</button>
+                        <button class="btn btn-export"><i class="fas fa-file-import"></i> 批量导入</button>
+                        <button class="btn btn-export"><i class="fas fa-file-export"></i> 导出</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-qrcode"></i></div><div class="stat-label">标识总量</div><div class="stat-value" style="color:var(--accent-cyan)">1,286</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-check-circle"></i></div><div class="stat-label">已同步</div><div class="stat-value" style="color:var(--success)">1,198</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--warning)"><i class="fas fa-clock"></i></div><div class="stat-label">待同步</div><div class="stat-value" style="color:var(--warning)">76</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--danger)"><i class="fas fa-times-circle"></i></div><div class="stat-label">同步失败</div><div class="stat-value" style="color:var(--danger)">12</div></div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th><input type="checkbox"></th><th>标识编码</th><th>素材名称</th><th>素材类型</th><th>所属企业</th><th>注册时间</th><th>同步状态</th><th>二维码</th><th>操作</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video001</span></td><td>A区主入口施工进度</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 14:30</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video002</span></td><td>B区材料验收记录</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 15:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video003</span></td><td>C区桩基施工监控</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 16:20</td><td><span class="status-tag pending"><i class="fas fa-clock"></i> 待同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video004</span></td><td>D区高空作业安全</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 17:10</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/img001</span></td><td>E区钢筋绑扎检查</td><td><i class="fas fa-image" style="color:var(--warning)"></i> 图片</td><td>山西路桥集团</td><td>2026-06-20 17:45</td><td><span class="status-tag synced"><i class="fas fa-check-circle"></i> 已同步</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><input type="checkbox"></td><td><span class="handle-code">88.550.cn/video005</span></td><td>F区混凝土浇筑</td><td><i class="fas fa-video" style="color:var(--accent-cyan)"></i> 视频</td><td>山西路桥集团</td><td>2026-06-20 18:30</td><td><span class="status-tag failed"><i class="fas fa-times-circle"></i> 同步失败</span></td><td><div class="qrcode-cell"><i class="fas fa-qrcode"></i></div></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">共 1,286 条记录，每页 10 条</span>
+                    <div class="page-btns">
+                        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">...</button>
+                        <button class="page-btn">129</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块2：模板管理 -->
+            <div class="module-section" id="mod-template">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-file-alt"></i> 模板管理</h2>
+                    <div class="toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="搜索模板名称...">
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> 新建模板</button>
+                        <button class="btn btn-export"><i class="fas fa-file-import"></i> 导入模板</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-file-alt"></i></div><div class="stat-label">模板总数</div><div class="stat-value" style="color:var(--accent-cyan)">24</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-check-circle"></i></div><div class="stat-label">已启用</div><div class="stat-value" style="color:var(--success)">18</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:#888"><i class="fas fa-pause-circle"></i></div><div class="stat-label">已停用</div><div class="stat-value" style="color:#888">6</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-cubes"></i></div><div class="stat-label">关联标识数</div><div class="stat-value" style="color:var(--accent-blue)">1,286</div></div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>模板ID</th><th>模板名称</th><th>模板类型</th><th>字段数量</th><th>关联标识数</th><th>创建时间</th><th>状态</th><th>操作</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="handle-code">TPL-001</span></td><td>施工现场视频模板</td><td>视频类</td><td>12</td><td>386</td><td>2026-03-15</td><td><span class="status-tag synced">启用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn disable">停用</button></div></td></tr>
+                        <tr><td><span class="handle-code">TPL-002</span></td><td>工程质量图片模板</td><td>图片类</td><td>8</td><td>245</td><td>2026-03-20</td><td><span class="status-tag synced">启用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn disable">停用</button></div></td></tr>
+                        <tr><td><span class="handle-code">TPL-003</span></td><td>设备巡检报告模板</td><td>文档类</td><td>15</td><td>178</td><td>2026-04-02</td><td><span class="status-tag synced">启用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn disable">停用</button></div></td></tr>
+                        <tr><td><span class="handle-code">TPL-004</span></td><td>安全巡检记录模板</td><td>表单类</td><td>20</td><td>312</td><td>2026-04-10</td><td><span class="status-tag synced">启用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn disable">停用</button></div></td></tr>
+                        <tr><td><span class="handle-code">TPL-005</span></td><td>材料验收模板</td><td>表单类</td><td>10</td><td>96</td><td>2026-04-18</td><td><span class="status-tag disabled">停用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn enable">启用</button></div></td></tr>
+                        <tr><td><span class="handle-code">TPL-006</span></td><td>竣工验收影像模板</td><td>视频类</td><td>14</td><td>69</td><td>2026-05-05</td><td><span class="status-tag synced">启用</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button><button class="action-btn disable">停用</button></div></td></tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">共 24 条记录</span>
+                    <div class="page-btns"><button class="page-btn active">1</button><button class="page-btn">2</button><button class="page-btn">3</button></div>
+                </div>
+            </div>
+
+            <!-- 模块3：模板字段授权 -->
+            <div class="module-section" id="mod-auth">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-key"></i> 模板字段授权</h2>
+                    <div class="toolbar">
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> 新增授权规则</button>
+                        <button class="btn btn-export"><i class="fas fa-download"></i> 导出授权表</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-shield-alt"></i></div><div class="stat-label">授权规则数</div><div class="stat-value" style="color:var(--accent-cyan)">42</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-unlock"></i></div><div class="stat-label">已授权字段</div><div class="stat-value" style="color:var(--success)">156</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--warning)"><i class="fas fa-lock"></i></div><div class="stat-label">受限字段</div><div class="stat-value" style="color:var(--warning)">38</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-users"></i></div><div class="stat-label">授权角色数</div><div class="stat-value" style="color:var(--accent-blue)">8</div></div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>规则ID</th><th>模板名称</th><th>字段名</th><th>授权角色</th><th>权限类型</th><th>生效时间</th><th>状态</th><th>操作</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="handle-code">AUTH-001</span></td><td>施工现场视频模板</td><td>video_url</td><td>管理员、编辑员</td><td>读写</td><td>2026-03-15</td><td><span class="status-tag synced">生效</span></td><td><div class="action-btns"><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><span class="handle-code">AUTH-002</span></td><td>施工现场视频模板</td><td>location_gps</td><td>管理员</td><td>只读</td><td>2026-03-15</td><td><span class="status-tag synced">生效</span></td><td><div class="action-btns"><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><span class="handle-code">AUTH-003</span></td><td>工程质量图片模板</td><td>image_file</td><td>管理员、编辑员、查看员</td><td>读写</td><td>2026-03-20</td><td><span class="status-tag synced">生效</span></td><td><div class="action-btns"><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><span class="handle-code">AUTH-004</span></td><td>安全巡检记录模板</td><td>inspector_name</td><td>安全主管、管理员</td><td>读写</td><td>2026-04-10</td><td><span class="status-tag synced">生效</span></td><td><div class="action-btns"><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><span class="handle-code">AUTH-005</span></td><td>设备巡检报告模板</td><td>device_serial</td><td>设备管理员</td><td>只读</td><td>2026-04-02</td><td><span class="status-tag pending">待审核</span></td><td><div class="action-btns"><button class="action-btn view">审核</button><button class="action-btn delete">删除</button></div></td></tr>
+                        <tr><td><span class="handle-code">AUTH-006</span></td><td>竣工验收影像模板</td><td>approval_sign</td><td>项目经理</td><td>只读</td><td>2026-05-05</td><td><span class="status-tag synced">生效</span></td><td><div class="action-btns"><button class="action-btn edit">编辑</button><button class="action-btn delete">删除</button></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块4：用户与认证管理 -->
+            <div class="module-section" id="mod-user">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-users-cog"></i> 用户与认证管理</h2>
+                    <div class="toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="搜索用户名或角色...">
+                        </div>
+                        <button class="btn btn-primary"><i class="fas fa-user-plus"></i> 新增用户</button>
+                        <button class="btn btn-export"><i class="fas fa-key"></i> 批量重置密码</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-users"></i></div><div class="stat-label">用户总数</div><div class="stat-value" style="color:var(--accent-cyan)">36</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-user-check"></i></div><div class="stat-label">在线用户</div><div class="stat-value" style="color:var(--success)">12</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-user-shield"></i></div><div class="stat-label">角色数量</div><div class="stat-value" style="color:var(--accent-blue)">6</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--warning)"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-label">Token即将过期</div><div class="stat-value" style="color:var(--warning)">3</div></div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>用户ID</th><th>用户名</th><th>姓名</th><th>角色</th><th>所属部门</th><th>认证方式</th><th>Token到期</th><th>状态</th><th>操作</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="handle-code">U-001</span></td><td>admin</td><td>系统管理员</td><td>超级管理员</td><td>信息中心</td><td>OAuth 2.0</td><td>2026-07-21</td><td><span class="status-tag online">在线</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button></div></td></tr>
+                        <tr><td><span class="handle-code">U-002</span></td><td>zhangwei</td><td>张伟</td><td>项目经理</td><td>工程一部</td><td>OAuth 2.0</td><td>2026-07-15</td><td><span class="status-tag online">在线</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button></div></td></tr>
+                        <tr><td><span class="handle-code">U-003</span></td><td>liuna</td><td>刘娜</td><td>安全主管</td><td>安全质量部</td><td>API Key</td><td>2026-06-25</td><td><span class="status-tag online">在线</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button></div></td></tr>
+                        <tr><td><span class="handle-code">U-004</span></td><td>wangpeng</td><td>王鹏</td><td>设备管理员</td><td>设备管理部</td><td>OAuth 2.0</td><td>2026-06-22</td><td><span class="status-tag pending">离线</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button></div></td></tr>
+                        <tr><td><span class="handle-code">U-005</span></td><td>chenxia</td><td>陈霞</td><td>编辑员</td><td>工程二部</td><td>证书认证</td><td>2026-08-10</td><td><span class="status-tag online">在线</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn edit">编辑</button></div></td></tr>
+                        <tr><td><span class="handle-code">U-006</span></td><td>zhaolei</td><td>赵磊</td><td>查看员</td><td>监理单位</td><td>API Key</td><td>2026-06-20</td><td><span class="status-tag failed">已过期</span></td><td><div class="action-btns"><button class="action-btn view">查看</button><button class="action-btn enable">续期</button></div></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 模块5：二级节点代理 -->
+            <div class="module-section" id="mod-node">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-server"></i> 二级节点代理配置</h2>
+                    <div class="toolbar">
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> 注册新节点</button>
+                        <button class="btn btn-export"><i class="fas fa-sync"></i> 批量同步</button>
+                        <button class="btn btn-export"><i class="fas fa-download"></i> 导出节点列表</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-server"></i></div><div class="stat-label">注册节点数</div><div class="stat-value" style="color:var(--accent-cyan)">12</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-plug"></i></div><div class="stat-label">在线节点</div><div class="stat-value" style="color:var(--success)">10</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--danger)"><i class="fas fa-unlink"></i></div><div class="stat-label">离线节点</div><div class="stat-value" style="color:var(--danger)">2</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-exchange-alt"></i></div><div class="stat-label">今日同步量</div><div class="stat-value" style="color:var(--accent-blue)">8,432</div></div>
+                </div>
+
+                <div class="node-card">
+                    <div>
+                        <div class="node-name"><i class="fas fa-server" style="color:var(--success);margin-right:8px"></i>华北区域节点 - 北京</div>
+                        <div class="node-meta">
+                            <span><i class="fas fa-globe"></i> node-bj.ymt.enterprise.cn:8443</span>
+                            <span><i class="fas fa-database"></i> Redis 6.2</span>
+                            <span><i class="fas fa-clock"></i> 延迟 12ms</span>
+                            <span><i class="fas fa-exchange-alt"></i> 今日同步 1,246 条</span>
+                        </div>
+                    </div>
+                    <div class="action-btns"><button class="action-btn view">详情</button><button class="action-btn edit">配置</button><button class="action-btn disable">禁用</button></div>
+                </div>
+                <div class="node-card">
+                    <div>
+                        <div class="node-name"><i class="fas fa-server" style="color:var(--success);margin-right:8px"></i>华东区域节点 - 上海</div>
+                        <div class="node-meta">
+                            <span><i class="fas fa-globe"></i> node-sh.ymt.enterprise.cn:8443</span>
+                            <span><i class="fas fa-database"></i> Redis 6.2</span>
+                            <span><i class="fas fa-clock"></i> 延迟 8ms</span>
+                            <span><i class="fas fa-exchange-alt"></i> 今日同步 2,108 条</span>
+                        </div>
+                    </div>
+                    <div class="action-btns"><button class="action-btn view">详情</button><button class="action-btn edit">配置</button><button class="action-btn disable">禁用</button></div>
+                </div>
+                <div class="node-card">
+                    <div>
+                        <div class="node-name"><i class="fas fa-server" style="color:var(--success);margin-right:8px"></i>华南区域节点 - 广州</div>
+                        <div class="node-meta">
+                            <span><i class="fas fa-globe"></i> node-gz.ymt.enterprise.cn:8443</span>
+                            <span><i class="fas fa-database"></i> Redis 7.0</span>
+                            <span><i class="fas fa-clock"></i> 延迟 22ms</span>
+                            <span><i class="fas fa-exchange-alt"></i> 今日同步 986 条</span>
+                        </div>
+                    </div>
+                    <div class="action-btns"><button class="action-btn view">详情</button><button class="action-btn edit">配置</button><button class="action-btn disable">禁用</button></div>
+                </div>
+                <div class="node-card">
+                    <div>
+                        <div class="node-name"><i class="fas fa-server" style="color:var(--success);margin-right:8px"></i>西南区域节点 - 成都</div>
+                        <div class="node-meta">
+                            <span><i class="fas fa-globe"></i> node-cd.ymt.enterprise.cn:8443</span>
+                            <span><i class="fas fa-database"></i> Redis 6.2</span>
+                            <span><i class="fas fa-clock"></i> 延迟 35ms</span>
+                            <span><i class="fas fa-exchange-alt"></i> 今日同步 756 条</span>
+                        </div>
+                    </div>
+                    <div class="action-btns"><button class="action-btn view">详情</button><button class="action-btn edit">配置</button><button class="action-btn disable">禁用</button></div>
+                </div>
+                <div class="node-card">
+                    <div>
+                        <div class="node-name"><i class="fas fa-server" style="color:var(--danger);margin-right:8px"></i>西北区域节点 - 西安 <span class="status-tag offline" style="margin-left:10px">离线</span></div>
+                        <div class="node-meta">
+                            <span><i class="fas fa-globe"></i> node-xa.ymt.enterprise.cn:8443</span>
+                            <span><i class="fas fa-database"></i> Redis 6.2</span>
+                            <span><i class="fas fa-clock"></i> 延迟 —</span>
+                            <span><i class="fas fa-exchange-alt"></i> 今日同步 0 条</span>
+                        </div>
+                    </div>
+                    <div class="action-btns"><button class="action-btn view">详情</button><button class="action-btn enable">重连</button><button class="action-btn edit">配置</button></div>
+                </div>
+            </div>
+
+            <!-- 模块6：系统参数管理 -->
+            <div class="module-section" id="mod-params">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-cogs"></i> 系统参数管理</h2>
+                    <div class="toolbar">
+                        <button class="btn btn-primary"><i class="fas fa-save"></i> 保存全部配置</button>
+                        <button class="btn btn-export"><i class="fas fa-undo"></i> 恢复默认</button>
+                        <button class="btn btn-export"><i class="fas fa-download"></i> 导出配置</button>
+                    </div>
+                </div>
+                <div class="config-grid">
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-qrcode"></i> 标识注册参数</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>企业标识前缀</label><input type="text" value="88.550.cn"></div>
+                            <div class="form-row"><label>标识编码规则</label><select><option selected>前缀+业务类型+序号</option><option>前缀+UUID</option><option>自定义规则</option></select></div>
+                            <div class="form-row"><label>单次批量注册上限</label><input type="number" value="500"></div>
+                            <div class="form-row"><label>标识有效期（天）</label><input type="number" value="365"></div>
+                            <div class="form-row"><label>自动续期</label>
+                                <div class="switch-label"><div class="switch on" onclick="this.classList.toggle('on')"></div><span style="color:var(--text-secondary);font-size:0.85rem">已开启</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-qrcode"></i> 二维码生成配置</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>二维码尺寸</label><select><option>200×200</option><option selected>300×300</option><option>400×400</option><option>500×500</option></select></div>
+                            <div class="form-row"><label>纠错等级</label><select><option>L (7%)</option><option selected>M (15%)</option><option>Q (25%)</option><option>H (30%)</option></select></div>
+                            <div class="form-row"><label>Logo嵌入</label>
+                                <div class="switch-label"><div class="switch on" onclick="this.classList.toggle('on')"></div><span style="color:var(--text-secondary);font-size:0.85rem">已开启</span></div>
+                            </div>
+                            <div class="form-row"><label>输出格式</label><select><option selected>PNG</option><option>SVG</option><option>PDF</option></select></div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-sync"></i> 节点同步配置</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>同步模式</label><select><option selected>增量同步</option><option>全量同步</option><option>手动同步</option></select></div>
+                            <div class="form-row"><label>同步间隔（秒）</label><input type="number" value="30"></div>
+                            <div class="form-row"><label>失败重试次数</label><input type="number" value="5"></div>
+                            <div class="form-row"><label>重试间隔（秒）</label><input type="number" value="60"></div>
+                            <div class="form-row"><label>冲突策略</label><select><option selected>主节点优先</option><option>最新优先</option><option>手动处理</option></select></div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-shield-alt"></i> 安全与认证配置</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>认证方式</label><select><option selected>OAuth 2.0</option><option>API Key</option><option>证书认证</option></select></div>
+                            <div class="form-row"><label>Token有效期（小时）</label><input type="number" value="24"></div>
+                            <div class="form-row"><label>登录失败锁定次数</label><input type="number" value="5"></div>
+                            <div class="form-row"><label>密码最小长度</label><input type="number" value="8"></div>
+                            <div class="form-row"><label>操作日志保留天数</label><input type="number" value="90"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块7：操作日志管理 -->
+            <div class="module-section" id="mod-logs">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-clipboard-list"></i> 操作日志管理</h2>
+                    <div class="toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="搜索操作内容或用户...">
+                        </div>
+                        <button class="btn btn-export"><i class="fas fa-filter"></i> 高级筛选</button>
+                        <button class="btn btn-export"><i class="fas fa-download"></i> 导出日志</button>
+                        <button class="btn btn-export" style="color:var(--danger);border-color:var(--danger)"><i class="fas fa-trash"></i> 清理过期日志</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-list"></i></div><div class="stat-label">日志总量</div><div class="stat-value" style="color:var(--accent-cyan)">28,456</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-info-circle"></i></div><div class="stat-label">INFO</div><div class="stat-value" style="color:var(--accent-blue)">24,108</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--warning)"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-label">WARN</div><div class="stat-value" style="color:var(--warning)">3,892</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--danger)"><i class="fas fa-times-circle"></i></div><div class="stat-label">ERROR</div><div class="stat-value" style="color:var(--danger)">456</div></div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr><th>时间</th><th>级别</th><th>操作用户</th><th>操作模块</th><th>操作内容</th><th>IP地址</th><th>结果</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2026-06-21 11:52:33</td><td><span class="log-level info">INFO</span></td><td>admin</td><td>标识信息管理</td><td>新增标识注册 88.550.cn/video006</td><td>192.168.1.100</td><td><span class="status-tag synced">成功</span></td></tr>
+                        <tr><td>2026-06-21 11:48:15</td><td><span class="log-level info">INFO</span></td><td>zhangwei</td><td>模板管理</td><td>修改模板 TPL-001 字段配置</td><td>192.168.1.105</td><td><span class="status-tag synced">成功</span></td></tr>
+                        <tr><td>2026-06-21 11:45:02</td><td><span class="log-level warn">WARN</span></td><td>system</td><td>二级节点代理</td><td>西北区域节点心跳超时，自动标记离线</td><td>—</td><td><span class="status-tag pending">告警</span></td></tr>
+                        <tr><td>2026-06-21 11:40:28</td><td><span class="log-level error">ERROR</span></td><td>system</td><td>标识信息管理</td><td>标识 88.550.cn/video005 同步至华北节点失败：连接超时</td><td>—</td><td><span class="status-tag failed">失败</span></td></tr>
+                        <tr><td>2026-06-21 11:35:10</td><td><span class="log-level info">INFO</span></td><td>liuna</td><td>用户与认证管理</td><td>用户 chenxia Token续期申请</td><td>192.168.1.112</td><td><span class="status-tag synced">成功</span></td></tr>
+                        <tr><td>2026-06-21 11:30:45</td><td><span class="log-level info">INFO</span></td><td>admin</td><td>系统参数管理</td><td>修改同步间隔 60s → 30s</td><td>192.168.1.100</td><td><span class="status-tag synced">成功</span></td></tr>
+                        <tr><td>2026-06-21 11:25:18</td><td><span class="log-level debug">DEBUG</span></td><td>system</td><td>缓存配置管理</td><td>Redis缓存命中率 96.8%，内存使用 2.1GB</td><td>—</td><td><span class="status-tag synced">正常</span></td></tr>
+                        <tr><td>2026-06-21 11:20:03</td><td><span class="log-level warn">WARN</span></td><td>system</td><td>模板字段授权</td><td>规则 AUTH-005 待审核超过48小时</td><td>—</td><td><span class="status-tag pending">提醒</span></td></tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <span class="page-info">共 28,456 条日志，每页 20 条</span>
+                    <div class="page-btns">
+                        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">...</button>
+                        <button class="page-btn">1423</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模块8：缓存配置管理 -->
+            <div class="module-section" id="mod-cache">
+                <div class="content-header">
+                    <h2 class="content-title"><i class="fas fa-database"></i> 缓存配置管理</h2>
+                    <div class="toolbar">
+                        <button class="btn btn-primary"><i class="fas fa-save"></i> 保存配置</button>
+                        <button class="btn btn-export"><i class="fas fa-broom"></i> 清空全部缓存</button>
+                        <button class="btn btn-export"><i class="fas fa-chart-bar"></i> 缓存分析</button>
+                    </div>
+                </div>
+                <div class="stat-cards">
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--success)"><i class="fas fa-heartbeat"></i></div><div class="stat-label">Redis状态</div><div class="stat-value" style="color:var(--success)">运行中</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-cyan)"><i class="fas fa-memory"></i></div><div class="stat-label">内存使用</div><div class="stat-value" style="color:var(--accent-cyan)">2.1 GB</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--accent-blue)"><i class="fas fa-bullseye"></i></div><div class="stat-label">命中率</div><div class="stat-value" style="color:var(--accent-blue)">96.8%</div></div>
+                    <div class="stat-card"><div class="stat-icon" style="color:var(--warning)"><i class="fas fa-key"></i></div><div class="stat-label">缓存Key数</div><div class="stat-value" style="color:var(--warning)">45,832</div></div>
+                </div>
+                <div class="config-grid">
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-server"></i> Redis连接配置</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>连接地址</label><input type="text" value="192.168.1.200"></div>
+                            <div class="form-row"><label>端口</label><input type="number" value="6379"></div>
+                            <div class="form-row"><label>数据库索引</label><input type="number" value="0"></div>
+                            <div class="form-row"><label>最大连接数</label><input type="number" value="100"></div>
+                            <div class="form-row"><label>连接超时（ms）</label><input type="number" value="3000"></div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-clock"></i> 缓存过期策略</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>标识信息缓存TTL</label><select><option>1小时</option><option selected>6小时</option><option>12小时</option><option>24小时</option></select></div>
+                            <div class="form-row"><label>模板数据缓存TTL</label><select><option>6小时</option><option>12小时</option><option selected>24小时</option><option>48小时</option></select></div>
+                            <div class="form-row"><label>用户Session TTL</label><select><option>30分钟</option><option selected>1小时</option><option>2小时</option><option>4小时</option></select></div>
+                            <div class="form-row"><label>节点同步缓存TTL</label><select><option>5分钟</option><option selected>15分钟</option><option>30分钟</option></select></div>
+                            <div class="form-row"><label>过期策略</label><select><option>LRU</option><option selected>LFU</option><option>随机淘汰</option><option>不淘汰</option></select></div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-shield-alt"></i> 缓存安全配置</div>
+                        <div class="config-panel-body">
+                            <div class="form-row"><label>访问密码</label><input type="password" value="************************"></div>
+                            <div class="form-row"><label>启用SSL</label>
+                                <div class="switch-label"><div class="switch on" onclick="this.classList.toggle('on')"></div><span style="color:var(--text-secondary);font-size:0.85rem">已开启</span></div>
+                            </div>
+                            <div class="form-row"><label>禁止公网访问</label>
+                                <div class="switch-label"><div class="switch on" onclick="this.classList.toggle('on')"></div><span style="color:var(--text-secondary);font-size:0.85rem">已开启</span></div>
+                            </div>
+                            <div class="form-row"><label>慢查询阈值（ms）</label><input type="number" value="100"></div>
+                        </div>
+                    </div>
+                    <div class="config-panel">
+                        <div class="config-panel-header"><i class="fas fa-chart-line"></i> 缓存性能监控</div>
+                        <div class="config-panel-body">
+                            <div class="detail-row"><div class="detail-label">运行时长</div><div class="detail-value">42天 15小时 23分</div></div>
+                            <div class="detail-row"><div class="detail-label">总命中次数</div><div class="detail-value">1,847,562</div></div>
+                            <div class="detail-row"><div class="detail-label">总未命中次数</div><div class="detail-value">62,438</div></div>
+                            <div class="detail-row"><div class="detail-label">已用内存</div><div class="detail-value">2.1 GB / 8 GB</div></div>
+                            <div class="detail-row"><div class="detail-label">Key过期数</div><div class="detail-value">128,456</div></div>
+                            <div class="detail-row"><div class="detail-label">每秒操作数</div><div class="detail-value">3,246 ops/s</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <a href="../index.html" class="back-link" style="position:fixed;bottom:55px;left:20px">
+        <i class="fas fa-arrow-left"></i> 返回项目导航
+    </a>
+
+    <footer class="footer">
+        <span>元码通标识管理系统 v2.0 | 企业前缀：88.550.cn</span>
+        <span>二级节点：已连接 | Redis缓存：运行中 | Token有效期：2026-06-21 14:30</span>
+    </footer>
+
+    <script>
+        function switchModule(el, name) {
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.module-section').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+            const target = document.getElementById('mod-' + name);
+            if (target) target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

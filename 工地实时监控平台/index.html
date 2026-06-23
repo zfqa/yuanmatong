@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工地实时监控平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a1628;
+            --bg-secondary: #0f2042;
+            --bg-card: #132d5a;
+            --border-color: #1e90ff;
+            --text-primary: #ffffff;
+            --text-secondary: #7eb8ff;
+            --accent-blue: #1e90ff;
+            --accent-cyan: #00d4ff;
+            --success: #00e676;
+            --warning: #ffc107;
+            --danger: #ff4757;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(180deg, rgba(15, 32, 66, 0.95), rgba(10, 22, 40, 0.98));
+            border-bottom: 1px solid rgba(30, 144, 255, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .video-card {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-header {
+            padding: 15px 20px;
+            background: rgba(30, 144, 255, 0.1);
+            border-bottom: 1px solid rgba(30, 144, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .video-title {
+            font-size: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .video-title i {
+            color: var(--accent-cyan);
+        }
+
+        .video-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--success);
+        }
+
+        .video-container {
+            flex: 1;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #000, #0a0a0a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .video-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .video-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .video-placeholder p {
+            font-size: 0.9rem;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .overlay-tag {
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .overlay-tag.live {
+            background: rgba(255, 71, 87, 0.8);
+            color: white;
+        }
+
+        .video-controls {
+            padding: 15px 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: rgba(15, 32, 66, 0.5);
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-blue);
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border: none;
+        }
+
+        .control-btn.primary:hover {
+            box-shadow: 0 5px 20px rgba(30, 144, 255, 0.4);
+        }
+
+        .control-btn.danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .control-btn.danger:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .info-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(30, 144, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .info-icon {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+        }
+
+        .info-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid rgba(30, 144, 255, 0.2);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .back-link {
+            padding: 10px 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(30, 144, 255, 0.3);
+            color: var(--text-primary);
+            border-radius: 6px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            background: var(--accent-blue);
+            border-color: transparent;
+        }
+
+        @media (max-width: 1024px) {
+            .monitor-grid {
+                grid-template-columns: 1fr;
+            }
+            .info-bar {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-hard-hat"></i> 工地实时监控平台
+            </div>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span>系统运行正常</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <span><i class="fas fa-map-marker-alt"></i> 监控点位：A区主入口 / B区材料堆放</span>
+            <span id="currentTime"><i class="fas fa-clock"></i> 2026-06-20 19:13:00</span>
+            <span><i class="fas fa-user"></i> 管理员：Admin</span>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="info-bar">
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-video"></i></div>
+                <div class="info-value">2</div>
+                <div class="info-label">在线摄像头</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="info-value" style="color: var(--warning);">3</div>
+                <div class="info-label">今日告警</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-camera"></i></div>
+                <div class="info-value">28</div>
+                <div class="info-label">今日采集</div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="info-value" style="color: var(--success);">99.8%</div>
+                <div class="info-label">系统可用率</div>
+            </div>
+        </div>
+
+        <div class="monitor-grid">
+            <div class="video-card">
+                <div class="video-header">
+                    <span class="video-title">
+                        <i class="fas fa-video"></i> 监控画面 1 - A区主入口
+                    </span>
+                    <span class="video-status">
+                        <span class="status-dot"></span> 在线
+                    </span>
+                </div>
+                <div class="video-container">
+                    <div class="video-overlay">
+                        <span class="overlay-tag live">● LIVE</span>
+                        <span class="overlay-tag">1080P</span>
+                        <span class="overlay-tag">A区-001</span>
+                    </div>
+                    <div class="video-placeholder" style="padding:0;overflow:hidden;">
+                        <img src="https://picsum.photos/seed/cam01/800/450" alt="A区主入口监控" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="video-controls">
+                    <button class="control-btn" onclick="alert('全屏查看')">
+                        <i class="fas fa-expand"></i> 全屏查看
+                    </button>
+                    <button class="control-btn primary" onclick="alert('采集并上传至元码通')">
+                        <i class="fas fa-camera"></i> 采集并上传
+                    </button>
+                    <button class="control-btn" onclick="alert('历史回放')">
+                        <i class="fas fa-history"></i> 历史回放
+                    </button>
+                    <button class="control-btn" onclick="alert('切换画面')">
+                        <i class="fas fa-exchange-alt"></i> 切换画面
+                    </button>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-header">
+                    <span class="video-title">
+                        <i class="fas fa-video"></i> 监控画面 2 - B区材料堆放
+                    </span>
+                    <span class="video-status">
+                        <span class="status-dot"></span> 在线
+                    </span>
+                </div>
+                <div class="video-container">
+                    <div class="video-overlay">
+                        <span class="overlay-tag live">● LIVE</span>
+                        <span class="overlay-tag">1080P</span>
+                        <span class="overlay-tag">B区-002</span>
+                    </div>
+                    <div class="video-placeholder" style="padding:0;overflow:hidden;">
+                        <img src="https://picsum.photos/seed/cam02/800/450" alt="B区材料堆放监控" style="width:100%;height:100%;object-fit:cover;display:block;">
+                    </div>
+                </div>
+                <div class="video-controls">
+                    <button class="control-btn" onclick="alert('全屏查看')">
+                        <i class="fas fa-expand"></i> 全屏查看
+                    </button>
+                    <button class="control-btn primary" onclick="alert('采集并上传至元码通')">
+                        <i class="fas fa-camera"></i> 采集并上传
+                    </button>
+                    <button class="control-btn" onclick="alert('历史回放')">
+                        <i class="fas fa-history"></i> 历史回放
+                    </button>
+                    <button class="control-btn" onclick="alert('切换画面')">
+                        <i class="fas fa-exchange-alt"></i> 切换画面
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="../index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> 返回项目导航
+    </a>
+
+    <footer class="footer">
+        <span>工地实时监控平台 - 施工现场视频监控系统</span>
+        <span>设备状态：全部在线 | 存储空间：1.2TB | 网络延迟：12ms</span>
+    </footer>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.getFullYear() + '-' + 
+                String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                String(now.getDate()).padStart(2, '0') + ' ' + 
+                String(now.getHours()).padStart(2, '0') + ':' + 
+                String(now.getMinutes()).padStart(2, '0') + ':' + 
+                String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('currentTime').innerHTML = '<i class="fas fa-clock"></i> ' + timeStr;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>

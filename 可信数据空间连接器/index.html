@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可信数据空间 · 接入连接器</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部标题栏 -->
+        <header class="top-header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div class="header-titles">
+                    <h1 class="main-title">可信数据空间 · 接入连接器</h1>
+                    <p class="sub-title">山西路桥集团 - 数据主权守门人</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="status-indicator">
+                    <span class="status-dot pulse"></span>
+                    <span class="status-text">运行正常</span>
+                </div>
+                <div class="node-id">
+                    <span class="label">节点ID：</span>
+                    <span class="value">SXLQ-CONN-001</span>
+                </div>
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </header>
+
+        <!-- 主体布局 -->
+        <div class="main-layout">
+            <!-- 左侧导航栏 -->
+            <aside class="left-nav">
+                <div class="nav-section">
+                    <div class="section-title">功能模块</div>
+                    <nav class="nav-menu">
+                        <a href="#" class="nav-item active" data-module="identity">
+                            <div class="nav-icon"><i class="fas fa-user-shield"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">身份可信管理</span>
+                                <span class="nav-desc">CA认证・双向信任</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-item" data-module="datasource">
+                            <div class="nav-icon"><i class="fas fa-database"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">数据资源接入</span>
+                                <span class="nav-desc">多源异构・统一适配</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-item" data-module="product">
+                            <div class="nav-icon"><i class="fas fa-cube"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">数据产品封装</span>
+                                <span class="nav-desc">目录管理・元码标识</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-item" data-module="contract">
+                            <div class="nav-icon"><i class="fas fa-file-contract"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">数字合约履约</span>
+                                <span class="nav-desc">智能合约・刚性执行</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-item" data-module="channel">
+                            <div class="nav-icon"><i class="fas fa-lock"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">安全交付通道</span>
+                                <span class="nav-desc">点对点加密・国密算法</span>
+                            </div>
+                        </a>
+                        <a href="#" class="nav-item" data-module="audit">
+                            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+                            <div class="nav-text">
+                                <span class="nav-name">审计计量运维</span>
+                                <span class="nav-desc">全链路追溯・计量计费</span>
+                            </div>
+                        </a>
+                    </nav>
+                </div>
+                <div class="nav-footer">
+                    <div class="load-card">
+                        <div class="load-header">
+                            <span class="load-title">连接器负载</span>
+                            <span class="load-status">健康</span>
+                        </div>
+                        <div class="load-item">
+                            <div class="load-label">
+                                <span>CPU</span>
+                                <span>23%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 23%"></div>
+                            </div>
+                        </div>
+                        <div class="load-item">
+                            <div class="load-label">
+                                <span>内存</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                        </div>
+                        <div class="load-item">
+                            <div class="load-label">
+                                <span>网络</span>
+                                <span>12%</span>
+                            </div>
+                            <div class="progress-track">
+                                <div class="progress-fill" style="width: 12%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 中间主内容区 -->
+            <main class="main-content" id="mainContent">
+                <!-- 模块一：身份可信管理 -->
+                <section class="module active" id="identity">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>身份可信管理模块</h2>
+                        <p class="module-desc">连接器设备身份认证与跨主体信任核验，确保接入节点真实可信</p>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">设备身份证书</div>
+                            <div class="card-value glow-text">已签发</div>
+                            <div class="card-note green">● 有效期至 2027-06-18</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">信任节点数</div>
+                            <div class="card-value glow-text">12</div>
+                            <div class="card-note">个已认证连接器</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">内部用户</div>
+                            <div class="card-value glow-text">48</div>
+                            <div class="card-note">个授权账号</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">今日认证次数</div>
+                            <div class="card-value glow-text">1,286</div>
+                            <div class="card-note green">成功率 99.9%</div>
+                        </div>
+                    </div>
+
+                    <div class="two-column">
+                        <div class="tech-border corner-decoration cert-card">
+                            <div class="card-title">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>连接器数字证书详情</span>
+                            </div>
+                            <div class="cert-details">
+                                <div class="cert-row">
+                                    <span class="cert-label">证书主题 (CN)</span>
+                                    <span class="cert-value mono">sxlq-conn-001.shanxiluqiao.cn</span>
+                                </div>
+                                <div class="cert-row">
+                                    <span class="cert-label">颁发机构</span>
+                                    <span class="cert-value">交通行业可信数据空间 CA</span>
+                                </div>
+                                <div class="cert-row">
+                                    <span class="cert-label">证书序列号</span>
+                                    <span class="cert-value mono">7F:2A:9B:4C:8E:1D:3F:6A</span>
+                                </div>
+                                <div class="cert-row">
+                                    <span class="cert-label">签名算法</span>
+                                    <span class="cert-value">SM2-with-SM3（国密）</span>
+                                </div>
+                                <div class="cert-row">
+                                    <span class="cert-label">有效期</span>
+                                    <span class="cert-value green">2025-06-18 至 2027-06-18</span>
+                                </div>
+                                <div class="cert-row">
+                                    <span class="cert-label">证书状态</span>
+                                    <span class="cert-value green"><span class="status-dot-small pulse"></span> 有效且可信</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tech-border corner-decoration nodes-card">
+                            <div class="card-title">
+                                <i class="fas fa-users"></i>
+                                <span>已认证对端节点</span>
+                            </div>
+                            <div class="nodes-list">
+                                <div class="node-item">
+                                    <div class="node-avatar green">交</div>
+                                    <div class="node-info">
+                                        <div class="node-name">交通厅数据节点</div>
+                                        <div class="node-id">jtt-conn-001</div>
+                                    </div>
+                                    <span class="node-badge green">已互信</span>
+                                </div>
+                                <div class="node-item">
+                                    <div class="node-avatar blue">省</div>
+                                    <div class="node-info">
+                                        <div class="node-name">省交通集团节点</div>
+                                        <div class="node-id">sxjt-conn-002</div>
+                                    </div>
+                                    <span class="node-badge blue">已互信</span>
+                                </div>
+                                <div class="node-item">
+                                    <div class="node-avatar purple">银</div>
+                                    <div class="node-info">
+                                        <div class="node-name">交通银行山西分行</div>
+                                        <div class="node-id">comm-conn-005</div>
+                                    </div>
+                                    <span class="node-badge purple">已互信</span>
+                                </div>
+                                <div class="node-item">
+                                    <div class="node-avatar yellow">物</div>
+                                    <div class="node-info">
+                                        <div class="node-name">省物流平台节点</div>
+                                        <div class="node-id">sxwl-conn-003</div>
+                                    </div>
+                                    <span class="node-badge yellow">已互信</span>
+                                </div>
+                                <div class="node-item">
+                                    <div class="node-avatar cyan">建</div>
+                                    <div class="node-info">
+                                        <div class="node-name">省建科院节点</div>
+                                        <div class="node-id">sjk-conn-008</div>
+                                    </div>
+                                    <span class="node-badge cyan">待确认</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 模块二：数据资源接入适配 -->
+                <section class="module" id="datasource">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>本地数据资源接入适配</h2>
+                        <p class="module-desc">多源异构数据源统一接入，屏蔽差异，标准化封装</p>
+                    </div>
+                    
+                    <div class="stats-row five-col">
+                        <div class="data-card corner-decoration center">
+                            <div class="card-icon blue"><i class="fas fa-database"></i></div>
+                            <div class="card-value glow-text">8</div>
+                            <div class="card-label">数据库</div>
+                        </div>
+                        <div class="data-card corner-decoration center">
+                            <div class="card-icon green"><i class="fas fa-file-alt"></i></div>
+                            <div class="card-value glow-text">24</div>
+                            <div class="card-label">文件资源</div>
+                        </div>
+                        <div class="data-card corner-decoration center">
+                            <div class="card-icon purple"><i class="fas fa-code"></i></div>
+                            <div class="card-value glow-text">15</div>
+                            <div class="card-label">API 接口</div>
+                        </div>
+                        <div class="data-card corner-decoration center">
+                            <div class="card-icon yellow"><i class="fas fa-bolt"></i></div>
+                            <div class="card-value glow-text">326</div>
+                            <div class="card-label">IoT 设备</div>
+                        </div>
+                        <div class="data-card corner-decoration center">
+                            <div class="card-icon cyan"><i class="fas fa-server"></i></div>
+                            <div class="card-value glow-text">6</div>
+                            <div class="card-label">业务系统</div>
+                        </div>
+                    </div>
+
+                    <div class="tech-border corner-decoration table-card">
+                        <div class="table-header">
+                            <div class="table-title">
+                                <i class="fas fa-list"></i>
+                                <span>已接入数据源列表</span>
+                            </div>
+                            <div class="table-actions">
+                                <button class="btn-outline"><i class="fas fa-plus"></i> 新增数据源</button>
+                                <button class="btn-outline"><i class="fas fa-sync"></i> 元数据采集</button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>数据源名称</th>
+                                    <th>类型</th>
+                                    <th>连接地址</th>
+                                    <th>数据量</th>
+                                    <th>分级分类</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ERP 财务数据库</td>
+                                    <td><span class="tag blue">MySQL</span></td>
+                                    <td class="mono">10.0.1.25:3306/erp_finance</td>
+                                    <td>128 万条</td>
+                                    <td><span class="tag orange">重要</span></td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>MES 生产系统</td>
+                                    <td><span class="tag blue">Oracle</span></td>
+                                    <td class="mono">10.0.2.18:1521/mes_prod</td>
+                                    <td>856 万条</td>
+                                    <td><span class="tag yellow">一般</span></td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>桥梁监测 IoT</td>
+                                    <td><span class="tag green">MQTT</span></td>
+                                    <td class="mono">iot.shanxiluqiao.cn:1883</td>
+                                    <td>实时流</td>
+                                    <td><span class="tag yellow">一般</span></td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>收费系统接口</td>
+                                    <td><span class="tag purple">REST API</span></td>
+                                    <td class="mono">api.toll.shanxiluqiao.cn</td>
+                                    <td>日增 5 万</td>
+                                    <td><span class="tag orange">重要</span></td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 正常</span></td>
+                                </tr>
+                                <tr>
+                                    <td>工程文档库</td>
+                                    <td><span class="tag cyan">对象存储</span></td>
+                                    <td class="mono">s3-docs.shanxiluqiao.cn</td>
+                                    <td>2.3TB</td>
+                                    <td><span class="tag red">核心</span></td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 正常</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 模块三：数据产品封装与目录管理 -->
+                <section class="module" id="product">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>数据产品封装与目录管理</h2>
+                        <p class="module-desc">数据资源标准化封装为数据产品，全局唯一元码标识，上架目录流通</p>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">已上架数据产品</div>
+                            <div class="card-value glow-text">32</div>
+                            <div class="card-note">个标准化产品</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">今日访问量</div>
+                            <div class="card-value glow-text">3,847</div>
+                            <div class="card-note green">↑ 12.5% 较昨日</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">目录同步状态</div>
+                            <div class="card-value glow-text green">已同步</div>
+                            <div class="card-note">全域目录节点</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">元码注册量</div>
+                            <div class="card-value glow-text">32</div>
+                            <div class="card-note">全局唯一标识</div>
+                        </div>
+                    </div>
+
+                    <div class="two-column one-third">
+                        <div class="tech-border corner-decoration chart-card">
+                            <div class="card-title">产品类型分布</div>
+                            <div class="donut-chart">
+                                <div class="donut-ring">
+                                    <div class="donut-center">
+                                        <div class="donut-value">32</div>
+                                        <div class="donut-label">总计</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color blue"></div>
+                                    <span class="legend-name">数据集</span>
+                                    <span class="legend-value blue">16 个 50%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color green"></div>
+                                    <span class="legend-name">API 服务</span>
+                                    <span class="legend-value green">10 个 31%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color purple"></div>
+                                    <span class="legend-name">模型服务</span>
+                                    <span class="legend-value purple">4 个 13%</span>
+                                </div>
+                                <div class="legend-item">
+                                    <div class="legend-color yellow"></div>
+                                    <span class="legend-name">文件包</span>
+                                    <span class="legend-value yellow">2 个 6%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tech-border corner-decoration top-products">
+                            <div class="card-title-row">
+                                <span class="card-title">热门数据产品 TOP5</span>
+                                <span class="card-subtitle">近7日调用量</span>
+                            </div>
+                            <div class="product-rank">
+                                <div class="rank-item">
+                                    <div class="rank-info">
+                                        <span class="rank-num yellow">1</span>
+                                        <span class="rank-name">桥梁结构健康监测数据集</span>
+                                        <span class="rank-tag blue">数据集</span>
+                                    </div>
+                                    <span class="rank-count">12,458 次</span>
+                                    <div class="progress-track"><div class="progress-fill" style="width: 100%"></div></div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-info">
+                                        <span class="rank-num gray">2</span>
+                                        <span class="rank-name">高速收费流水查询 API</span>
+                                        <span class="rank-tag green">API</span>
+                                    </div>
+                                    <span class="rank-count">8,932 次</span>
+                                    <div class="progress-track"><div class="progress-fill" style="width: 72%"></div></div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-info">
+                                        <span class="rank-num orange">3</span>
+                                        <span class="rank-name">工程质量智能评估模型</span>
+                                        <span class="rank-tag purple">模型</span>
+                                    </div>
+                                    <span class="rank-count">5,621 次</span>
+                                    <div class="progress-track"><div class="progress-fill" style="width: 45%"></div></div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-info">
+                                        <span class="rank-num">4</span>
+                                        <span class="rank-name">施工进度统计数据集</span>
+                                        <span class="rank-tag blue">数据集</span>
+                                    </div>
+                                    <span class="rank-count">3,845 次</span>
+                                    <div class="progress-track"><div class="progress-fill" style="width: 31%"></div></div>
+                                </div>
+                                <div class="rank-item">
+                                    <div class="rank-info">
+                                        <span class="rank-num">5</span>
+                                        <span class="rank-name">物资设备库存查询接口</span>
+                                        <span class="rank-tag green">API</span>
+                                    </div>
+                                    <span class="rank-count">2,156 次</span>
+                                    <div class="progress-track"><div class="progress-fill" style="width: 17%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-border corner-decoration product-detail">
+                        <div class="detail-header">
+                            <div class="detail-info">
+                                <div class="detail-name">桥梁结构健康监测数据集</div>
+                                <div class="detail-meta">
+                                    <span class="meta-code mono">DAT-SXLQ-BRIDGE-001</span>
+                                    <span class="meta-time">更新时间：2026-06-17</span>
+                                    <span class="meta-status green">已上架</span>
+                                </div>
+                            </div>
+                            <div class="detail-actions">
+                                <button class="btn-outline"><i class="fas fa-edit"></i> 编辑</button>
+                                <button class="btn-outline"><i class="fas fa-arrow-down"></i> 下架</button>
+                            </div>
+                        </div>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <div class="detail-label">数据类型</div>
+                                <div class="detail-value">结构化时序数据</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">数据规模</div>
+                                <div class="detail-value">5,280 万条・12GB</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">覆盖范围</div>
+                                <div class="detail-value">23 座桥梁・3 年</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">安全等级</div>
+                                <div class="detail-value orange">重要数据（L3）</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 模块四：数字合约解析与履约控制 -->
+                <section class="module" id="contract">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>数字合约解析与履约控制</h2>
+                        <p class="module-desc">合约刚性执行，动态拦截违规请求，数据使用全程可控</p>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">生效中合约</div>
+                            <div class="card-value glow-text">48</div>
+                            <div class="card-note">份数字合约</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">今日履约次数</div>
+                            <div class="card-value glow-text">2,847</div>
+                            <div class="card-note green">合规执行率 100%</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">违规拦截</div>
+                            <div class="card-value glow-text red">0</div>
+                            <div class="card-note">本月累计</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">沙箱计算任务</div>
+                            <div class="card-value glow-text purple">156</div>
+                            <div class="card-note">运行中 12 个</div>
+                        </div>
+                    </div>
+
+                    <div class="two-column">
+                        <div class="tech-border corner-decoration contract-card">
+                            <div class="card-title">
+                                <i class="fas fa-file-contract"></i>
+                                <span>合约约束条件（示例）</span>
+                            </div>
+                            <div class="contract-info">
+                                <div class="contract-id">合约编号：<span class="mono">CT-2026-0523-0087</span></div>
+                                <div class="contract-name">「桥梁健康监测数据」联合分析合约</div>
+                                <div class="contract-parties">甲方：山西路桥集团 ｜ 乙方：省交通科学研究院</div>
+                            </div>
+                            <div class="constraints-list">
+                                <div class="constraint-item">
+                                    <div class="constraint-icon"><i class="fas fa-check"></i></div>
+                                    <div class="constraint-content">
+                                        <div class="constraint-title">使用主体限制</div>
+                                        <div class="constraint-desc">仅限省交科院「桥梁检测课题组」5 名授权研究员使用</div>
+                                    </div>
+                                </div>
+                                <div class="constraint-item">
+                                    <div class="constraint-icon"><i class="fas fa-check"></i></div>
+                                    <div class="constraint-content">
+                                        <div class="constraint-title">时效限制</div>
+                                        <div class="constraint-desc">有效期：2026-05-23 至 2026-08-23（90 天）</div>
+                                    </div>
+                                </div>
+                                <div class="constraint-item">
+                                    <div class="constraint-icon"><i class="fas fa-check"></i></div>
+                                    <div class="constraint-content">
+                                        <div class="constraint-title">使用场景限制</div>
+                                        <div class="constraint-desc">仅限桥梁安全课题研究，不得用于商业用途或其他项目</div>
+                                    </div>
+                                </div>
+                                <div class="constraint-item">
+                                    <div class="constraint-icon"><i class="fas fa-check"></i></div>
+                                    <div class="constraint-content">
+                                        <div class="constraint-title">输出限制</div>
+                                        <div class="constraint-desc">仅允许输出聚合统计结果，单条明细数据不可导出，原始数据不出本地</div>
+                                    </div>
+                                </div>
+                                <div class="constraint-item">
+                                    <div class="constraint-icon"><i class="fas fa-check"></i></div>
+                                    <div class="constraint-content">
+                                        <div class="constraint-title">调用次数限制</div>
+                                        <div class="constraint-desc">累计最大调用 10,000 次，单日不超过 500 次</div>
+                                        <div class="usage-bar">
+                                            <div class="usage-text">已使用 3,241 / 10,000 次</div>
+                                            <div class="progress-track"><div class="progress-fill" style="width: 32%"></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tech-border corner-decoration flow-card">
+                            <div class="card-title">
+                                <i class="fas fa-bolt"></i>
+                                <span>合约履约执行流程</span>
+                            </div>
+                            <div class="flow-timeline">
+                                <div class="flow-step">
+                                    <div class="step-marker">1</div>
+                                    <div class="step-content">
+                                        <div class="step-title">数据请求接入</div>
+                                        <div class="step-desc">消费方连接器发起数据访问请求，携带身份凭证与合约编号</div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-marker">2</div>
+                                    <div class="step-content">
+                                        <div class="step-title">合约校验引擎</div>
+                                        <div class="step-desc">实时校验：身份是否合法、是否在有效期内、是否超调用次数、场景是否匹配</div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-marker">3</div>
+                                    <div class="step-content">
+                                        <div class="step-title">数据沙箱加载</div>
+                                        <div class="step-desc">原始数据加载至连接器本地安全沙箱，外部无法直接访问明文</div>
+                                    </div>
+                                </div>
+                                <div class="flow-step">
+                                    <div class="step-marker">4</div>
+                                    <div class="step-content">
+                                        <div class="step-title">计算执行与脱敏</div>
+                                        <div class="step-desc">在沙箱内执行计算逻辑，按合约规则对输出结果进行脱敏、聚合、去标识化处理</div>
+                                    </div>
+                                </div>
+                                <div class="flow-step done">
+                                    <div class="step-marker"><i class="fas fa-check"></i></div>
+                                    <div class="step-content">
+                                        <div class="step-title">安全交付 + 存证</div>
+                                        <div class="step-desc">加密传输计算结果，全操作日志上链存证，同步计量计费数据</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="violation-alert">
+                                <div class="alert-title"><i class="fas fa-exclamation-triangle"></i> 违规自动阻断机制</div>
+                                <div class="alert-desc">任一约束条件不满足时，连接器立即阻断数据流，返回拒绝响应，并触发安全告警。所有阻断行为同步审计日志。</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 模块五：安全数据交付通道 -->
+                <section class="module" id="channel">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>安全数据交付通道</h2>
+                        <p class="module-desc">点对点加密传输，数据不经过中心平台，国密算法端到端保护</p>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">活跃通道数</div>
+                            <div class="card-value glow-text">8</div>
+                            <div class="card-note green">● 全部正常</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">今日传输量</div>
+                            <div class="card-value glow-text">12.8 GB</div>
+                            <div class="card-note">加密传输</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">加密算法</div>
+                            <div class="card-value glow-text green">SM4 + SM2</div>
+                            <div class="card-note">国密标准</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">平均延迟</div>
+                            <div class="card-value glow-text">23ms</div>
+                            <div class="card-note">省内节点</div>
+                        </div>
+                    </div>
+
+                    <div class="tech-border corner-decoration topology-card">
+                        <div class="card-title">
+                            <i class="fas fa-network-wired"></i>
+                            <span>数据传输通道拓扑（东西向点对点 + 南北向管控）</span>
+                        </div>
+                        <div class="topology">
+                            <div class="topo-node local">
+                                <div class="topo-icon"><i class="fas fa-server"></i></div>
+                                <div class="topo-name">本端连接器</div>
+                                <div class="topo-sub">山西路桥</div>
+                                <div class="topo-desc">数据提供方节点</div>
+                            </div>
+                            <div class="topo-channels">
+                                <div class="channel east-west">
+                                    <div class="channel-track">
+                                        <div class="channel-flow"></div>
+                                    </div>
+                                    <div class="channel-label">🔒 东西向 · 点对点加密通道 · SM4国密加密</div>
+                                </div>
+                                <div class="channel north-south">
+                                    <div class="platform-node">
+                                        <div class="platform-icon"><i class="fas fa-building"></i></div>
+                                        <div class="platform-name">可信数据空间服务平台</div>
+                                    </div>
+                                    <div class="platform-desc">南北向 · 身份/目录/合约/审计同步</div>
+                                </div>
+                            </div>
+                            <div class="topo-node remote">
+                                <div class="topo-icon"><i class="fas fa-server"></i></div>
+                                <div class="topo-name">对端连接器</div>
+                                <div class="topo-sub">省交科院</div>
+                                <div class="topo-desc">数据消费方节点</div>
+                            </div>
+                        </div>
+                        <div class="topo-features">
+                            <div class="feature-item">
+                                <div class="feature-title">✓ 数据不出本地</div>
+                                <div class="feature-desc">原始数据永久留存本地，仅计算结果或密文对外传输</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">✓ 端到端加密</div>
+                                <div class="feature-desc">国密 SM4 对称加密 + SM2 密钥协商，全程密文传输</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-title">✓ 平台不碰数据</div>
+                                <div class="feature-desc">服务平台仅做管控，原始数据不经平台中转</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-border corner-decoration table-card">
+                        <div class="table-title">活跃传输通道列表</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>通道名称</th>
+                                    <th>对端节点</th>
+                                    <th>加密协议</th>
+                                    <th>今日流量</th>
+                                    <th>延迟</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>交科院 - 桥梁研究通道</td>
+                                    <td>省交通科学研究院</td>
+                                    <td><span class="tag green">TLS 1.3 + SM4</span></td>
+                                    <td>2.3 GB</td>
+                                    <td>18ms</td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 连通</span></td>
+                                </tr>
+                                <tr>
+                                    <td>交通厅 - 统计上报通道</td>
+                                    <td>省交通厅数据中心</td>
+                                    <td><span class="tag green">TLS 1.3 + SM4</span></td>
+                                    <td>5.1 GB</td>
+                                    <td>25ms</td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 连通</span></td>
+                                </tr>
+                                <tr>
+                                    <td>交行 - 授信数据通道</td>
+                                    <td>交通银行山西分行</td>
+                                    <td><span class="tag green">TLS 1.3 + SM4</span></td>
+                                    <td>0.8 GB</td>
+                                    <td>32ms</td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 连通</span></td>
+                                </tr>
+                                <tr>
+                                    <td>物流平台 - 货运通道</td>
+                                    <td>省智慧物流平台</td>
+                                    <td><span class="tag green">TLS 1.3 + SM4</span></td>
+                                    <td>4.6 GB</td>
+                                    <td>21ms</td>
+                                    <td><span class="status-green"><span class="status-dot-small"></span> 连通</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 模块六：审计、计量与运维监控 -->
+                <section class="module" id="audit">
+                    <div class="module-header">
+                        <h2 class="module-title"><span class="title-bar"></span>审计、计量与运维监控</h2>
+                        <p class="module-desc">全链路操作可追溯、可追责、可计量，支撑数据资产结算</p>
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">今日审计日志</div>
+                            <div class="card-value glow-text">15,847</div>
+                            <div class="card-note">条操作记录</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">上链存证</div>
+                            <div class="card-value glow-text green">100%</div>
+                            <div class="card-note">全量区块链存证</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">本月计量调用</div>
+                            <div class="card-value glow-text">86,429</div>
+                            <div class="card-note">次数据调用</div>
+                        </div>
+                        <div class="data-card corner-decoration">
+                            <div class="card-label">安全告警</div>
+                            <div class="card-value glow-text yellow">2</div>
+                            <div class="card-note">本月待处理</div>
+                        </div>
+                    </div>
+
+                    <div class="two-column two-third">
+                        <div class="tech-border corner-decoration chart-card">
+                            <div class="card-title-row">
+                                <span class="card-title">近7日数据调用量趋势</span>
+                                <span class="card-subtitle">单位：次</span>
+                            </div>
+                            <div class="bar-chart">
+                                <div class="bar-item" style="--height: 60%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-12</span>
+                                </div>
+                                <div class="bar-item" style="--height: 75%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-13</span>
+                                </div>
+                                <div class="bar-item" style="--height: 65%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-14</span>
+                                </div>
+                                <div class="bar-item" style="--height: 80%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-15</span>
+                                </div>
+                                <div class="bar-item" style="--height: 88%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-16</span>
+                                </div>
+                                <div class="bar-item" style="--height: 72%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">06-17</span>
+                                </div>
+                                <div class="bar-item today" style="--height: 95%">
+                                    <div class="bar"></div>
+                                    <span class="bar-label">今日</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tech-border corner-decoration">
+                            <div class="card-title">本月计量统计</div>
+                            <div class="meter-stats">
+                                <div class="meter-item blue">
+                                    <div class="meter-header">
+                                        <span class="meter-name">数据集查询</span>
+                                        <span class="meter-value">52,341 次</span>
+                                    </div>
+                                    <div class="progress-track"><div class="progress-fill blue" style="width: 60%"></div></div>
+                                </div>
+                                <div class="meter-item green">
+                                    <div class="meter-header">
+                                        <span class="meter-name">API 服务调用</span>
+                                        <span class="meter-value">28,156 次</span>
+                                    </div>
+                                    <div class="progress-track"><div class="progress-fill green" style="width: 33%"></div></div>
+                                </div>
+                                <div class="meter-item purple">
+                                    <div class="meter-header">
+                                        <span class="meter-name">模型计算任务</span>
+                                        <span class="meter-value">5,932 次</span>
+                                    </div>
+                                    <div class="progress-track"><div class="progress-fill purple" style="width: 7%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-border corner-decoration audit-log">
+                        <div class="card-title-row">
+                            <span class="card-title">实时审计日志</span>
+                            <span class="live-status"><span class="status-dot-small pulse"></span> 实时更新中</span>
+                        </div>
+                        <div class="log-list">
+                            <div class="log-item">
+                                <span class="log-time">22:51:32</span>
+                                <span class="log-type green">数据访问</span>
+                                <span class="log-content">用户「李研究员」通过合约 CT-2026-0523-0087 访问「桥梁健康监测数据集」</span>
+                                <span class="log-result green">✓ 合规通过</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">22:48:15</span>
+                                <span class="log-type blue">合约校验</span>
+                                <span class="log-content">合约 CT-2026-0523-0087 调用次数校验通过，剩余 6,759 次</span>
+                                <span class="log-result green">✓ 校验通过</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">22:45:08</span>
+                                <span class="log-type purple">沙箱计算</span>
+                                <span class="log-content">安全沙箱执行统计分析任务，输出聚合结果，原始数据未出域</span>
+                                <span class="log-result green">✓ 执行完成</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">22:42:33</span>
+                                <span class="log-type yellow">身份认证</span>
+                                <span class="log-content">连接器「省交科院 - conn-001」双向 TLS 认证成功，建立加密通道</span>
+                                <span class="log-result green">✓ 认证成功</span>
+                            </div>
+                            <div class="log-item warning">
+                                <span class="log-time">22:38:19</span>
+                                <span class="log-type yellow">安全告警</span>
+                                <span class="log-content">检测到异常 IP 尝试连接，已自动拒绝并记录（IP: 219.150.xx.xx）</span>
+                                <span class="log-result yellow">⚠ 已拦截</span>
+                            </div>
+                            <div class="log-item">
+                                <span class="log-time">22:35:47</span>
+                                <span class="log-type cyan">存证上链</span>
+                                <span class="log-content">批次 20260618-2235 共 1,248 条审计日志完成区块链存证</span>
+                                <span class="log-result green">✓ 上链成功</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- 右侧状态面板 -->
+            <aside class="right-panel">
+                <div class="panel-section">
+                    <div class="section-title">连接器概览</div>
+                    <div class="tech-border corner-decoration connector-card">
+                        <div class="connector-header">
+                            <div class="connector-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="connector-info">
+                                <div class="connector-name">接入连接器</div>
+                                <div class="connector-id">SXLQ-CONN-001</div>
+                            </div>
+                        </div>
+                        <div class="connector-details">
+                            <div class="detail-row">
+                                <span class="detail-label">部署位置</span>
+                                <span class="detail-value">集团总部机房</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">部署形态</span>
+                                <span class="detail-value">软硬一体网关</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">安全等级</span>
+                                <span class="detail-value green">等保三级</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">国密算法</span>
+                                <span class="detail-value">SM2/SM3/SM4</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">运行时长</span>
+                                <span class="detail-value">127 天 8 小时</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="section-title">今日关键指标</div>
+                    <div class="metric-cards">
+                        <div class="data-card">
+                            <div class="metric-header">
+                                <span class="metric-label">数据调用次数</span>
+                                <span class="metric-value">3,847</span>
+                            </div>
+                            <div class="metric-note green">↑ 12.5% 较昨日</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="metric-header">
+                                <span class="metric-label">数据传输量</span>
+                                <span class="metric-value">12.8GB</span>
+                            </div>
+                            <div class="metric-note green">↑ 8.3% 较昨日</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="metric-header">
+                                <span class="metric-label">活跃合约数</span>
+                                <span class="metric-value">48</span>
+                            </div>
+                            <div class="metric-note">全部正常履约</div>
+                        </div>
+                        <div class="data-card">
+                            <div class="metric-header">
+                                <span class="metric-label">安全事件</span>
+                                <span class="metric-value">1</span>
+                            </div>
+                            <div class="metric-note yellow">异常连接已拦截</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="section-title">数据分级分布</div>
+                    <div class="tech-border corner-decoration">
+                        <div class="level-bars">
+                            <div class="level-item">
+                                <div class="level-header">
+                                    <span class="level-name red">核心数据</span>
+                                    <span class="level-percent">5%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill red" style="width: 5%"></div></div>
+                            </div>
+                            <div class="level-item">
+                                <div class="level-header">
+                                    <span class="level-name orange">重要数据</span>
+                                    <span class="level-percent">35%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill orange" style="width: 35%"></div></div>
+                            </div>
+                            <div class="level-item">
+                                <div class="level-header">
+                                    <span class="level-name yellow">一般数据</span>
+                                    <span class="level-percent">45%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill yellow" style="width: 45%"></div></div>
+                            </div>
+                            <div class="level-item">
+                                <div class="level-header">
+                                    <span class="level-name green">公开数据</span>
+                                    <span class="level-percent">15%</span>
+                                </div>
+                                <div class="progress-track"><div class="progress-fill green" style="width: 15%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <div class="section-title">快速操作</div>
+                    <div class="quick-actions">
+                        <button class="action-btn"><i class="fas fa-upload"></i> 上架数据产品</button>
+                        <button class="action-btn"><i class="fas fa-file-signature"></i> 签署数字合约</button>
+                        <button class="action-btn"><i class="fas fa-chart-line"></i> 查看审计报告</button>
+                        <button class="action-btn"><i class="fas fa-cog"></i> 系统配置</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

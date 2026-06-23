@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据确权管理平台</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-database"></i>
+                <span>数据确权</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-module="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>工作台</span>
+                </a>
+                <a href="#" class="nav-item" data-module="register">
+                    <i class="fas fa-file-alt"></i>
+                    <span>资产登记</span>
+                </a>
+                <a href="#" class="nav-item" data-module="publicity">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>产权公示</span>
+                </a>
+                <a href="#" class="nav-item" data-module="management">
+                    <i class="fas fa-tasks"></i>
+                    <span>登记管理</span>
+                </a>
+                <a href="#" class="nav-item" data-module="query">
+                    <i class="fas fa-search"></i>
+                    <span>查询统计</span>
+                </a>
+            </nav>
+            <div class="user-info">
+                <img src="https://picsum.photos/seed/admin/40/40" alt="用户头像" class="user-avatar">
+                <div class="user-details">
+                    <span class="user-name">管理员</span>
+                    <span class="user-role">系统管理员</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧主内容区 -->
+        <main class="main-content">
+            <!-- 模块一：工作台 -->
+            <section id="dashboard" class="module active">
+                <h2 class="page-title">工作台</h2>
+                
+                <!-- 统计卡片区 -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon blue"><i class="fas fa-database"></i></div>
+                        <div class="stat-info">
+                            <h3>数据总量</h3>
+                            <p class="stat-number">1,234</p>
+                            <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green"><i class="fas fa-building"></i></div>
+                        <div class="stat-info">
+                            <h3>登记部门数</h3>
+                            <p class="stat-number">56</p>
+                            <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange"><i class="fas fa-certificate"></i></div>
+                        <div class="stat-info">
+                            <h3>证书发放数</h3>
+                            <p class="stat-number">892</p>
+                            <span class="stat-trend up"><i class="fas fa-arrow-up"></i> 8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple"><i class="fas fa-plus-circle"></i></div>
+                        <div class="stat-info">
+                            <h3>今日新增数</h3>
+                            <p class="stat-number">23</p>
+                            <span class="stat-trend down"><i class="fas fa-arrow-down"></i> 3%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 图表区 -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>近7天登记趋势</h3>
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>数据类型分布</h3>
+                        <canvas id="typeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 最新登记列表 -->
+                <div class="recent-table">
+                    <h3>最新登记</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>数据名称</th>
+                                <th>申请人</th>
+                                <th>数据类型</th>
+                                <th>状态</th>
+                                <th>日期</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>城市交通流量数据</td>
+                                <td>交通管理局</td>
+                                <td>公共数据</td>
+                                <td><span class="status-badge blue">公示中</span></td>
+                                <td>2026-06-19</td>
+                            </tr>
+                            <tr>
+                                <td>企业征信报告数据</td>
+                                <td>金融数据中心</td>
+                                <td>企业数据</td>
+                                <td><span class="status-badge green">已登记</span></td>
+                                <td>2026-06-18</td>
+                            </tr>
+                            <tr>
+                                <td>医疗健康档案数据</td>
+                                <td>卫生健康委</td>
+                                <td>个人数据</td>
+                                <td><span class="status-badge gray">已注销</span></td>
+                                <td>2026-06-17</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 模块二：资产登记 -->
+            <section id="register" class="module">
+                <h2 class="page-title">资产登记</h2>
+                <form id="registerForm" class="register-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>数据名称 <span class="required">*</span></label>
+                            <input type="text" id="dataName" placeholder="请输入数据资产的正式名称" required>
+                        </div>
+                        <div class="form-group">
+                            <label>所属行业</label>
+                            <select id="industry">
+                                <option value="">请选择行业</option>
+                                <option value="transport">交通运输</option>
+                                <option value="public">公共管理</option>
+                                <option value="finance">金融</option>
+                                <option value="medical">医疗健康</option>
+                                <option value="education">教育</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>数据简介</label>
+                            <textarea id="dataDesc" rows="4" placeholder="描述数据的内容、来源、覆盖范围等"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>数据来源</label>
+                            <input type="text" id="dataSource" placeholder="说明数据的采集方式或提供方">
+                        </div>
+                        <div class="form-group">
+                            <label>上传附件</label>
+                            <div class="file-upload">
+                                <input type="file" id="fileUpload" multiple>
+                                <label for="fileUpload" class="file-label">
+                                    <i class="fas fa-cloud-upload-alt"></i> 选择文件
+                                </label>
+                                <span class="file-info">支持上传证明文件或数据样本</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>权利声明</label>
+                            <textarea id="rightsStatement" rows="3" placeholder="填写数据持有权、加工使用权等权利归属说明"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">取消</button>
+                        <button type="submit" class="btn btn-primary">提交登记</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 模块三：产权公示 -->
+            <section id="publicity" class="module">
+                <h2 class="page-title">产权公示</h2>
+                <div class="table-container">
+                    <table id="publicityTable">
+                        <thead>
+                            <tr>
+                                <th>登记编号</th>
+                                <th>数据名称</th>
+                                <th>申请人</th>
+                                <th>状态</th>
+                                <th>公示日期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publicityBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 模块四：登记管理 -->
+            <section id="management" class="module">
+                <h2 class="page-title">登记管理</h2>
+                <div class="tab-container">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="pending">
+                            待审核 <span class="badge" id="pendingCount">3</span>
+                        </button>
+                        <button class="tab-btn" data-tab="reviewed">已审核</button>
+                    </div>
+                    <div class="tab-content active" id="pending">
+                        <table id="pendingTable">
+                            <thead>
+                                <tr>
+                                    <th>数据名称</th>
+                                    <th>申请人</th>
+                                    <th>提交时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pendingBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-content" id="reviewed">
+                        <table id="reviewedTable">
+                            <thead>
+                                <tr>
+                                    <th>数据名称</th>
+                                    <th>申请人</th>
+                                    <th>审核时间</th>
+                                    <th>审核结果</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewedBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模块五：查询统计 -->
+            <section id="query" class="module">
+                <h2 class="page-title">查询统计</h2>
+                <div class="search-section">
+                    <div class="search-bar">
+                        <input type="text" id="searchInput" placeholder="支持按登记编号、数据名称、申请人关键词搜索">
+                        <button class="btn btn-primary" onclick="searchData()">
+                            <i class="fas fa-search"></i> 查询
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetSearch()">
+                            <i class="fas fa-undo"></i> 重置
+                        </button>
+                    </div>
+                    <div class="search-result-info" id="searchResultInfo"></div>
+                    <div class="table-container">
+                        <table id="queryTable">
+                            <thead>
+                                <tr>
+                                    <th>登记编号</th>
+                                    <th>数据名称</th>
+                                    <th>申请人</th>
+                                    <th>状态</th>
+                                    <th>登记日期</th>
+                                </tr>
+                            </thead>
+                            <tbody id="queryBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 详情弹窗 -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>数据详情</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal()">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast提示 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
